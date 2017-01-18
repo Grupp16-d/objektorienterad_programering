@@ -1,6 +1,8 @@
 /**
  * Created by Max on 18/01/17.
  */
+import java.util.Arrays
+
 public class Lab1 {
     public static void sort(int[] a) {
         for (int i = a.length - 1; i > 0; i--) { 
@@ -19,5 +21,7 @@ public class Lab1 {
         sort(x);
         System.out.println(x);
     }
+
+
 }
 
