@@ -1,3 +1,6 @@
+import java.util.Scanner;
+import java.io.File;
+
 public class Lab1 {
     public static void sort(int[] a) {
         int temp;
@@ -13,7 +16,12 @@ public class Lab1 {
     }
 
     public static void main(String[] args) throws Exception {
-        int[] x = {6,2,1,10,7};
+        Scanner s = new Scanner(new File(args[0]));
+        int[] x = new int[s.nextInt()];
+        for (int i = 0; i < x.length; i++){
+            x[i] = s.nextInt();
+        }
+
         sort(x);
         System.out.println(x[0]);
     }
