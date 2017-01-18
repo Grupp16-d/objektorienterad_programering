@@ -1,5 +1,6 @@
 import java.util.Scanner;
 import java.io.File;
+import java.util.*;
 
 public class Lab1 {
     public static void sort(int[] a) {
@@ -16,13 +17,27 @@ public class Lab1 {
     }
 
     public static void main(String[] args) throws Exception {
-        Scanner s = new Scanner(new File(args[0]));
-        int[] x = new int[s.nextInt()];
-        for (int i = 0; i < x.length; i++){
-            x[i] = s.nextInt();
-        }
+        Scanner s = new Scanner(System.in);
+        System.out.println("hej");
+        List<Integer> x = new ArrayList<Integer>();
 
-        sort(x);
-        System.out.println(x[0]);
+        /* ---------------------------------------------------------------------------------------------------------- */
+
+        while (s.hasNextInt()) {
+            x.add(s.nextInt());
+        }
+        System.out.println("hej");
+
+        int[] xArray = new int[x.size()];
+        for (int i=0; i < xArray.length; i++)
+        {
+            xArray[i] = x.get(i).intValue();
+        }
+        System.out.println("hej");
+        sort(xArray);
+
+        for (int i=0; i < xArray.length; i++){
+            System.out.println(xArray[i]);
+        }
     }
 }
