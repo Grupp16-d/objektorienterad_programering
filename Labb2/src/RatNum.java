@@ -1,24 +1,5 @@
-import java.lang.String;
-
 public class RatNum {
     public int a,b;
-
-    //Steg 1
-    //största gemensama delare metod
-    static int sgd(int m, int n) {
-        if (m == 0 || n == 0) {
-            throw new IllegalArgumentException();
-        }
-        m = Math.abs(m);
-        n = Math.abs(n);
-
-        while (n != 0) {
-            int r = n;
-            n = m % n;
-            m = r;
-        }
-        return m;
-    }
 
     //Steg 2
     public RatNum(){
@@ -61,7 +42,25 @@ public class RatNum {
         return b;
     }
 
+    //Steg 1
+    //största gemensama delare metod
+    static int sgd(int m, int n) {
+        if (m == 0 || n == 0) {
+            throw new IllegalArgumentException();
+        }
+        m = Math.abs(m);
+        n = Math.abs(n);
+
+        while (n != 0) {
+            int r = n;
+            n = m % n;
+            m = r;
+        }
+        return m;
+    }
+
     //Steg 3
+    //Parses a RatNum to string
     public String toString(RatNum x){
         a = x.getNumerator();
         b = x.getDenominator();
@@ -69,6 +68,7 @@ public class RatNum {
         return strRatNum;
     }
 
+    //Parses a RatNum to a double
     public double toDouble(RatNum x){
         a = x.getNumerator();
         b = x.getDenominator();
@@ -78,10 +78,32 @@ public class RatNum {
     }
 
     public static RatNum parse(String s){
+        // Splits at "/" and checks if there's 2 indexes which are numbers, returns the numbers as RatNum
         String[] str = s.split("/");
-        if(str.length == 2){
-            str.matches("-?\\d+(\\.\\d+)?");
+        boolean numbericA = isNumeric(str[0]);
+        boolean numbericB = isNumeric(str[1]);
+
+        if(str.length == 2 && numbericA && numbericB){
+            int a = Integer.parseInt(str[0]);
+            int b = Integer.parseInt(str[1]);
+            return new RatNum(a, b);
+        }else{
+            throw new NumberFormatException("This is not a valid number!");
+
         }
     }
 
+    // Checks if a str is numberic
+    private static boolean isNumeric(String str) {
+        try {
+            double d = Integer.parseInt(str);
+        }
+        catch(NumberFormatException nfe) {
+            return false;
+        }
+        return true;
+    }
+
 }
+
+
