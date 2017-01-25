@@ -1,18 +1,18 @@
-public class RatNum {
-    public int a,b;
+class RatNum {
+    private int a,b;
 
     //Steg 2
-    public RatNum(){
+    RatNum(){
         this.a = 0;
         this.b = 1;
     }
 
-    public RatNum(int a){
+    RatNum(int a){
         this.a = a;
         this.b = 1;
     }
 
-    public RatNum(int a, int b){
+    RatNum(int a, int b){
         if(b == 0) {
             throw new NumberFormatException("Denominator = 0");
         }else if(a == 0){
@@ -29,16 +29,16 @@ public class RatNum {
         }
     }
 
-    public RatNum(RatNum x){
+    RatNum(RatNum x){
         this.a = x.getNumerator();
         this.b = x.getDenominator();
     }
 
-    public int getNumerator(){
+    int getNumerator(){
         return a;
     }
 
-    public int getDenominator(){
+    int getDenominator(){
         return b;
     }
 
@@ -59,25 +59,15 @@ public class RatNum {
         return m;
     }
 
-    //Steg 3
-    //Parses a RatNum to string
-    public String toString(RatNum x){
-        a = x.getNumerator();
-        b = x.getDenominator();
-        String strRatNum = a + "/" + b;
-        return strRatNum;
-    }
-
     //Parses a RatNum to a double
-    public double toDouble(RatNum x){
+    double toDouble(RatNum x){
         a = x.getNumerator();
         b = x.getDenominator();
         double ab = a/b;
-        double rounded = Math.round(ab *100) / 100;
-        return rounded;
+        return (double) (Math.round(ab *100) / 100);
     }
 
-    public static RatNum parse(String s){
+    static RatNum parse(String s){
         // Splits at "/" and checks if there's 2 indexes which are numbers, returns the numbers as RatNum
         String[] str = s.split("/");
         boolean numbericA = isNumeric(str[0]);
