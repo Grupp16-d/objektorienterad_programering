@@ -10,9 +10,9 @@ public class RatNum {
         n = Math.abs(n);
 
         while (n != 0) {
-            int c = n;
+            int r = n;
             n = m % n;
-            m = c;
+            m = r;
         }
         return m;
     }
@@ -29,12 +29,16 @@ public class RatNum {
     }
 
     public RatNum(int a, int b){
-        if(b == 0){
+        if(b == 0) {
             throw new NumberFormatException("Denominator = 0");
-        }
-        if(a == 0){
+        }else if(a == 0){
             this.a = a;
             this.b = 1;
+        }else if(b < 0) {
+            a = a * -1;
+            b = b * -1;
+            this.a = a / sgd(a, b);
+            this.b = b / sgd(a, b);
         }else {
             this.a = a / sgd(a, b);
             this.b = b / sgd(a, b);
