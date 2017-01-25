@@ -2,7 +2,7 @@ public class RatNum {
     //största gemensama delare metod
 
     static int sgd(int m, int n) {
-        if(m == 0 || n == 0){
+        if (m == 0 || n == 0) {
             throw new IllegalArgumentException();
         }
         m = Math.abs(m);
@@ -15,11 +15,12 @@ public class RatNum {
         }
         return m;
     }
+}
         //Steg 2
 
         //steg 3
         //En metod toString som returnerar det aktuella talet som en text
-    private toString() {
+  /*  private toString() {
 
         }
 
@@ -34,4 +35,4 @@ public class RatNum {
     //
 
 
-}
+}*/
