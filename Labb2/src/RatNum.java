@@ -1,6 +1,9 @@
+import java.lang.String;
+
 public class RatNum {
     public int a,b;
 
+    //Steg 1
     //största gemensama delare metod
     static int sgd(int m, int n) {
         if (m == 0 || n == 0) {
@@ -58,23 +61,27 @@ public class RatNum {
         return b;
     }
 
-}
-
-        //steg 3
-        //En metod toString som returnerar det aktuella talet som en text
-  /*  private toString() {
-
-        }
-
-        //beräkna ett närmevärde på n/m
-
-    private double toDouble(double m, double n) {
-        double x;
-        x = m / n;
-        return x;
+    //Steg 3
+    public String toString(RatNum x){
+        a = x.getNumerator();
+        b = x.getDenominator();
+        String strRatNum = a + "/" + b;
+        return strRatNum;
     }
 
-    //
+    public double toDouble(RatNum x){
+        a = x.getNumerator();
+        b = x.getDenominator();
+        double ab = a/b;
+        double rounded = Math.round(ab *100) / 100;
+        return rounded;
+    }
 
+    public static RatNum parse(String s){
+        String[] str = s.split("/");
+        if(str.length == 2){
+            str.matches("-?\\d+(\\.\\d+)?");
+        }
+    }
 
-}*/
+}
