@@ -1,25 +1,15 @@
 public class RatNum {
-   // public static int sgd(int m, int n){
-      public static int sgd(int m, int n){
-        if(m==0 || n==0) {
-            throw new IllegalArgumentException();
-        }
+    //största gemensama delare metod
+   static int sgd(int m, int n)
+   {
+       while(m!=0 && n!=0) // until either one of them is 0
+       {
+           int c = m;
+           n = m%n;
+           m = c;
+       }
+       return m+n; // either one is 0, so return the non-zero value
 
-        int absM = Math.abs(m);
-        int absN = Math.abs(n);
-
-        int r = 1;
-        while(r != 0){
-            r = absM / absN;
-            absM = absN;
-            absN = r;
-        }
-
-        m = m / absN;
-        n = n / absN;
-        /*--------------------------------- FIXA RETURN -----------------------*/
-        return m, n;
-    }
     //Steg 2
 
     //steg 3
