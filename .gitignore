@@ -6,3 +6,7 @@
 .idea/workspace.xml
 
 Labb2/.idea/workspace.xml
+
+*.class
+
+*.xml
