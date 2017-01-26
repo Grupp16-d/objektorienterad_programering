@@ -34,12 +34,9 @@ public class RatNum {
         this.b = x.getDenominator();
     }
 
-    public int getNumerator(){
-        return a;
-    }
-
-    public int getDenominator(){
-        return b;
+    public RatNum(String s){
+        this.a = parse(s).getNumerator();
+        this.b = parse(s).getDenominator();
     }
 
     //Steg 1
@@ -59,38 +56,47 @@ public class RatNum {
         return m;
     }
 
-    //Steg 3
+    //Steg s
     //Parses a RatNum to string
-    public String toString(RatNum x){
-        a = x.getNumerator();
-        b = x.getDenominator();
+    @Override
+    public String toString(){
+        a = getNumerator();
+        b = getDenominator();
         String strRatNum = a + "/" + b;
         return strRatNum;
     }
 
     //Parses a RatNum to a double
-    public double toDouble(RatNum x){
-        a = x.getNumerator();
-        b = x.getDenominator();
-        double ab = a/b;
-        double rounded = Math.round(ab *100) / 100;
-        return rounded;
+    public double toDouble(){
+        return (double)a/b;
     }
 
     public static RatNum parse(String s){
         // Splits at "/" and checks if there's 2 indexes which are numbers, returns the numbers as RatNum
+        s = s.replaceAll("\\s","");
         String[] str = s.split("/");
-        boolean numbericA = isNumeric(str[0]);
-        boolean numbericB = isNumeric(str[1]);
 
-        if(str.length == 2 && numbericA && numbericB){
-            int a = Integer.parseInt(str[0]);
-            int b = Integer.parseInt(str[1]);
-            return new RatNum(a, b);
-        }else{
-            throw new NumberFormatException("This is not a valid number!");
+        if(str.length == 1){
+            boolean numbericA = isNumeric(str[0]);
+            if(numbericA){
+                int a = Integer.parseInt(str[0]);
+                int b = 1;
+                return new RatNum(a, b);
+            }else{
+                throw new NumberFormatException("This is not a valid number!");
 
+            }
+        }else if(str.length == 2){
+            boolean numbericA = isNumeric(str[0]);
+            boolean numbericB = isNumeric(str[1]);
+            if(numbericA && numbericB) {
+                int a = Integer.parseInt(str[0]);
+                int b = Integer.parseInt(str[1]);
+                return new RatNum(a, b);
+            }
         }
+        throw new NumberFormatException("This is not a valid number!");
+
     }
 
     // Checks if a str is numberic
@@ -102,6 +108,68 @@ public class RatNum {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public Object clone() {
+        return new RatNum(a, b);
+    }
+
+
+    public boolean equals(RatNum y){
+        boolean eq = a == y.getNumerator() && b == getDenominator();
+        return eq;
+    }
+
+    public boolean lessThan(RatNum y){
+        double a = getRatNum().toDouble();
+        double b = y.toDouble();
+
+        return (a < b);
+    }
+
+    public RatNum add(RatNum y){
+        int xa = a * y.getDenominator();
+        int ya = y.getNumerator() * b;
+        a = xa + ya;
+        b = b * y.getDenominator();
+
+        return new RatNum(a, b);
+    }
+
+    public RatNum sub(RatNum y){
+        int xa = a * y.getDenominator();
+        int ya = y.getNumerator() * b;
+        int xaya = xa - ya;
+        int xbyb= b * y.getDenominator();
+
+        return new RatNum(xaya, xbyb);
+    }
+
+    public RatNum mul(RatNum y){
+        int numA = a * y.getNumerator();
+        int numB = b * y.getDenominator();
+
+        return new RatNum(numA, numB);
+    }
+
+    public RatNum div(RatNum y){
+        int numA = a * y.getDenominator();
+        int numB = b * y.getNumerator();
+
+        return new RatNum(numA, numB);
+    }
+
+    public int getNumerator(){
+        return a;
+    }
+
+    public int getDenominator(){
+        return b;
+    }
+
+    public RatNum getRatNum(){
+        return new RatNum(a, b);
     }
 
 }
