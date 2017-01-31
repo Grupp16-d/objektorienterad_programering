@@ -2,6 +2,7 @@ public class RatNum {
     public int a,b;
 
     //Steg 2
+    /* -------------------------------------------- Fixa parser ------------------------*/
     public RatNum(){
         this.a = 0;
         this.b = 1;
