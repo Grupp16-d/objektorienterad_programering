@@ -3,7 +3,7 @@ import java.util.Random;
 import javax.swing.*;
 
 public class Tools {
-    Void randomOrder{
+    Void randomOrder;{
 
     }
 }

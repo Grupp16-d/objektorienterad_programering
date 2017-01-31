@@ -28,6 +28,7 @@ public class Card extends JButton{
     }
 
     public boolean sameIcon(Card b){
-        boolean comp = this.picture == getIcon(b);
+        boolean comp = this.picture == b.getIcon();
+        return comp;
     }
 }
