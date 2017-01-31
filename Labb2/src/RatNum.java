@@ -171,7 +171,6 @@ public class RatNum {
     public RatNum getRatNum(){
         return new RatNum(a, b);
     }
-
 }
 
 
