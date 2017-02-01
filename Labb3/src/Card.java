@@ -1,5 +1,4 @@
 import javax.swing.*;
-import java.awt.*;
 
 public class Card extends JButton{
 
@@ -7,29 +6,29 @@ public class Card extends JButton{
         HIDDEN, VISIBLE, MISSING
     }
 
-    public Status status;
-    public Icon picture;
+    private Status cardStatus;
+    private Icon cardIcon;
 
     public Card(Icon x){
-        this.status = Status.MISSING;
-        this.picture = x;
+        this.cardStatus = Status.MISSING;
+        this.cardIcon = x;
     }
 
     public Card(Icon x, Status s){
-        this.status = s;
-        this.picture = x;
+        this.cardStatus = s;
+        this.cardIcon = x;
     }
 
     public void setStatus(Status s){
-        this.status = s;
+        this.cardStatus = s;
     }
 
     public Status getStatus(){
-        return status;
+        return this.cardStatus;
     }
 
     public boolean sameIcon(Card b){
-        boolean comp = this.picture == b.getIcon();
+        boolean comp = this.cardIcon == b.cardIcon;
         return comp;
     }
 }

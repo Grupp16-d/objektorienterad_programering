@@ -1,8 +1,7 @@
 public class RatNum {
-    public int a,b;
+    private int a,b;
 
     //Steg 2
-    /* -------------------------------------------- Fixa parser ------------------------*/
     public RatNum(){
         this.a = 0;
         this.b = 1;
@@ -113,17 +112,17 @@ public class RatNum {
 
     @Override
     public Object clone() {
-        return new RatNum(a, b);
+        return new RatNum(this);
     }
 
 
     public boolean equals(RatNum y){
-        boolean eq = a == y.getNumerator() && b == getDenominator();
+        boolean eq = a == y.getNumerator() && b == y.getDenominator();
         return eq;
     }
 
     public boolean lessThan(RatNum y){
-        double a = getRatNum().toDouble();
+        double a = this.toDouble();
         double b = y.toDouble();
 
         return (a < b);
@@ -169,9 +168,6 @@ public class RatNum {
         return b;
     }
 
-    public RatNum getRatNum(){
-        return new RatNum(a, b);
-    }
 }
 
 
