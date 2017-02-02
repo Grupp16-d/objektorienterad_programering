@@ -27,5 +27,34 @@ public class Memory {
 
         Tools.randomOrder(cards);
     }
+    @Override
+	public void actionPerformed(ActionEvent e) {
+	if (e.getSource() == buttonCount) {
+		count++;
+		labelCount.setText(Integer.toString(count));
+		} else if (e.getSource() == buttonReset) {
+            count = 0;
+			labelCount.setText("0");
+		}
+	}
+
+    public static void main(String[] args){
+        final Memory memory = new Memory();
+        JFrame frame = new JFrame("Memory");
+        frame.pack();
+        frame.setVisible(true);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        JButton newgame = new JButton("New game");
+        newgame.addActionListener(
+                new NewGameListener());
+        JButton exit = new JButton("Exit game");
+        newgame.addActionListener(
+                new ExitListener());
+        frame.add(newgame);
+        frame.add(exit);
+
+
+    }
 
 }
