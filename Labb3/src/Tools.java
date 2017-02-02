@@ -1,19 +1,20 @@
 import java.util.Arrays;
 import java.util.Random;
-import javax.swing.*;
 
 public class Tools {
-    private Void randomOrder;{
 
+    public static void randomOrder(Object[] x){
+        Random ran = new Random();
+        Object[] tempArray = new Object[x.length];
+        int i = 0;
+
+        while(Arrays.asList(tempArray).contains(null)) {
+            int randomIndex = ran.nextInt(x.length);
+            if (tempArray[randomIndex] == null) {
+                tempArray[randomIndex] = x[i];
+                i++;
+            }
+        }
+        System.arraycopy(tempArray, 0, x, 0, x.length);
     }
 }
-
-
-/*
-        public void main(String[]args) {
-            int[] tempArray = new int[5];
-            for(int i = 0; i < tempArray.length; i++) {
-                tempArray[i] = (int)(Math.random()*0+9);
-            }
-
-        }*/
