@@ -1,7 +1,7 @@
 public class RatNum {
     private int a,b;
 
-    //Steg 2
+    //Constructors for RatNums
     public RatNum(){
         this.a = 0;
         this.b = 1;
@@ -12,6 +12,9 @@ public class RatNum {
         this.b = 1;
     }
 
+    //When RatNum is called upon with 2 parameters an error is return if the b value is equal to 0. If a is equal to zero
+    //the same logic applies as the empty constructor above. If b is negative both values are multiplied by -1 return being
+    //divided by the greatest common divisor.
     public RatNum(int a, int b){
         if(b == 0) {
             throw new NumberFormatException("Denominator = 0");
@@ -39,8 +42,7 @@ public class RatNum {
         this.b = parse(s).getDenominator();
     }
 
-    //Steg 1
-    //största gemensama delare metod
+    // A method that returns the greatest common divisor of two ints
     static int sgd(int m, int n) {
         if (m == 0 || n == 0) {
             throw new IllegalArgumentException();
@@ -56,8 +58,7 @@ public class RatNum {
         return m;
     }
 
-    //Steg s
-    //Parses a RatNum to string
+    //Parses a RatNum to a string
     @Override
     public String toString(){
         a = getNumerator();
@@ -71,56 +72,67 @@ public class RatNum {
         return (double)a/b;
     }
 
+    //Parses a string as a Ratnum if the string contains a valid expression of a RatNum
     public static RatNum parse(String s){
-        // Splits at "/" and checks if there's 2 indexes which are numbers, returns the numbers as RatNum
+        //Removes whitespaces
         s = s.replaceAll("\\s","");
-        String[] str = s.split("/");
+        //Checks if the string contains a "/". If it does then the string is split at the "/" and if the resulting array
+        //contains 2 indexes the method tries to convert the value of these to ints and call on the RatNum constructor
+        //together with the two values. If the string does not contain a "/" then the string is tried as an int immediately.
+        if(s.contains("/")){
+            try{
+                String[] str = s.split("/");
+                if(str.length == 2) {
+                    if(str[0] !=null || str[1] !=null){
+                        try {
+                            int a = Integer.parseInt(str[0]);
+                            int b = Integer.parseInt(str[1]);
+                            return new RatNum(a, b);
+                        }
+                        catch(NumberFormatException nfe) {
+                            throw new NumberFormatException("This expression contains non ints");
+                        }
+                    }else{
+                        throw new NumberFormatException("This expression contains non ints");
+                    }
 
-        if(str.length == 1){
-            boolean numbericA = isNumeric(str[0]);
-            if(numbericA){
-                int a = Integer.parseInt(str[0]);
-                int b = 1;
-                return new RatNum(a, b);
+                }else{
+                    throw new NumberFormatException("This is not a valid expression!");
+                }
+            }
+            catch(ArrayIndexOutOfBoundsException e){
+                throw new NumberFormatException("This is not a valid expression!");
+            }
+        }else{
+            if(s !=null){
+                try {
+                    int a = Integer.parseInt(s);
+                    int b = 1;
+                    return new RatNum(a, b);
+                }
+                catch(NumberFormatException nfe) {
+                    throw new NumberFormatException("This expression contains non ints");
+                }
             }else{
-                throw new NumberFormatException("This is not a valid number!");
-
-            }
-        }else if(str.length == 2){
-            boolean numbericA = isNumeric(str[0]);
-            boolean numbericB = isNumeric(str[1]);
-            if(numbericA && numbericB) {
-                int a = Integer.parseInt(str[0]);
-                int b = Integer.parseInt(str[1]);
-                return new RatNum(a, b);
+                throw new NumberFormatException("This expression contains non ints");
             }
         }
-        throw new NumberFormatException("This is not a valid number!");
-
     }
 
-    // Checks if a str is numberic
-    private static boolean isNumeric(String str) {
-        try {
-            double d = Integer.parseInt(str);
-        }
-        catch(NumberFormatException nfe) {
-            return false;
-        }
-        return true;
-    }
-
+    //Returns the selected RatNum as an Object
     @Override
     public Object clone() {
         return new RatNum(this);
     }
 
 
+    //Checks if the RatNums are equals
     public boolean equals(RatNum y){
         boolean eq = a == y.getNumerator() && b == y.getDenominator();
         return eq;
     }
 
+    //Checks if the selected RatNum is less then the parameter RatNum
     public boolean lessThan(RatNum y){
         double a = this.toDouble();
         double b = y.toDouble();
@@ -128,6 +140,7 @@ public class RatNum {
         return (a < b);
     }
 
+    //Adds the parameter RatNum to the selected RatNum
     public RatNum add(RatNum y){
         int xa = a * y.getDenominator();
         int ya = y.getNumerator() * b;
@@ -137,6 +150,7 @@ public class RatNum {
         return new RatNum(a, b);
     }
 
+    //Subtracts the parameter RatNum to the selected RatNum
     public RatNum sub(RatNum y){
         int xa = a * y.getDenominator();
         int ya = y.getNumerator() * b;
@@ -146,6 +160,7 @@ public class RatNum {
         return new RatNum(xaya, xbyb);
     }
 
+    //Multiplies the two RatNums
     public RatNum mul(RatNum y){
         int numA = a * y.getNumerator();
         int numB = b * y.getDenominator();
@@ -153,6 +168,7 @@ public class RatNum {
         return new RatNum(numA, numB);
     }
 
+    //Divides the selected RatNum with the parameter RatNum
     public RatNum div(RatNum y){
         int numA = a * y.getDenominator();
         int numB = b * y.getNumerator();
@@ -160,10 +176,12 @@ public class RatNum {
         return new RatNum(numA, numB);
     }
 
+    //Returns the a value of the selected RatNum
     public int getNumerator(){
         return a;
     }
 
+    //Returns the b value of the selected RatNum
     public int getDenominator(){
         return b;
     }
