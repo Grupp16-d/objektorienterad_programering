@@ -11,6 +11,7 @@ public class Card extends JButton{
     private Icon cardIcon;
 
     public Card(Icon x){
+        this.setBorderPainted(false);
         this.setOpaque(true);
         this.setBackground(Color.white);
         this.cardStatus = Status.MISSING;
@@ -19,6 +20,7 @@ public class Card extends JButton{
     }
 
     public Card(Icon x, Status s){
+        this.setBorderPainted(false);
         this.setOpaque(true);
         this.cardStatus = s;
         this.cardIcon = x;
