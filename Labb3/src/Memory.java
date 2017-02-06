@@ -11,9 +11,8 @@ public class Memory implements Runnable {
     JLabel score1 = new JLabel("0");
     JLabel score2 = new JLabel("0");
 
-    private int width = 1000;
-    private int height = 800;
-
+    private int width = 400;
+    private int height = 200;
 
     public Memory(){
         for(int i = 0; i < pictures.length; i++){
@@ -36,22 +35,33 @@ public class Memory implements Runnable {
         }
         Tools.randomOrder(cards);
 
+        width = m * 85 + 120;
+        height = n * 90 + 40;
+        frame.setSize(width, height);
+
+
+        JPanel players = new JPanel();
         JPanel panePlayer1 = new JPanel();
         JLabel lblPlayer1 = new JLabel("Player 1");
         JPanel panePlayer2 = new JPanel();
         JLabel lblPlayer2 = new JLabel("Player 2");
 
+        players.setPreferredSize(new Dimension((120), (height-40/2)));
+        panePlayer1.setPreferredSize(new Dimension(120, (height-40)/2));
+        panePlayer2.setPreferredSize(new Dimension(120, (height-40)/2));
+
+        players.add(panePlayer1);
+        players.add(panePlayer2);
         panePlayer1.add(lblPlayer1);
         panePlayer1.add(score1);
         panePlayer2.add(lblPlayer2);
         panePlayer2.add(score2);
-        frame.add(panePlayer1);
-        frame.add(panePlayer2);
 
-        panePlayer1.setVisible(true);
-        panePlayer2.setVisible(true);
-        lblPlayer1.setVisible(true);
-        lblPlayer2.setVisible(true);
+
+        frame.add(players, BorderLayout.WEST);
+
+        panePlayer1.setBorder(BorderFactory.createLineBorder(Color.black));
+        panePlayer2.setBorder(BorderFactory.createLineBorder(Color.black));
 
         JPanel paneCards = new JPanel();
         for(JButton card : cards){
@@ -60,7 +70,9 @@ public class Memory implements Runnable {
             paneCards.add(card);
             card.setVisible(true);
         }
-        frame.add(paneCards);
+        frame.add(paneCards, BorderLayout.EAST);
+        paneCards.setPreferredSize(new Dimension(width - 120, height - 40));
+
         paneCards.setVisible(true);
         frame.revalidate();
     }
@@ -128,22 +140,23 @@ public class Memory implements Runnable {
 
     @Override
     public void run(){
-        final Memory memory = new Memory();
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setSize(width, height);
-        frame.setLayout(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
+        frame.setResizable(false);
+
+        JPanel paneButtons = new JPanel();
+        paneButtons.setPreferredSize(new Dimension(width, 40));
 
         JButton startgame = new JButton("New game");
-        frame.add(startgame);
+        paneButtons.add(startgame);
         startgame.addActionListener(new StartGameListener());
         JButton exit = new JButton("Exit game");
-        frame.add(exit);
+        paneButtons.add(exit);
         exit.addActionListener(new ExitListener());
 
-
+        frame.add(paneButtons, BorderLayout.PAGE_END);
 
     }
 }
