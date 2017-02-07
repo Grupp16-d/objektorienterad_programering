@@ -205,6 +205,13 @@ public class Memory implements Runnable {
         }
     }
 
+    public class TimerListener implements  ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e){
+            
+        }
+    }
+
 
     public class ExitListener implements ActionListener {
         @Override
