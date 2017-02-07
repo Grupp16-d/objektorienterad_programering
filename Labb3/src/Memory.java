@@ -82,8 +82,8 @@ public class Memory implements Runnable {
         lblScore2.setText(Integer.toString(score2));
 
 
-        width = m * 80 + 120;
-        height = n * 80 + 60;
+        width = m * 100 + 120;
+        height = n * 100 + 60;
         frame.setSize(width, height);
 
         frame.getContentPane().removeAll();
@@ -122,7 +122,7 @@ public class Memory implements Runnable {
 
         JPanel paneCards = new JPanel();
         for (JButton card : cards) {
-            card.setPreferredSize(new Dimension(70, 70));
+            card.setPreferredSize(new Dimension(90, 90));
             card.addActionListener(new CardListener());
             paneCards.add(card);
             card.setVisible(true);
@@ -177,6 +177,8 @@ public class Memory implements Runnable {
 
     public class CardListener implements ActionListener {
 
+        Timer timer = new Timer(1000, new TimerListener());
+
         @Override
         public void actionPerformed(ActionEvent e) {
             if (!cardTurned) {
@@ -190,25 +192,25 @@ public class Memory implements Runnable {
                 if (card2.getStatus() == Card.Status.HIDDEN) {
                     card2.setStatus(Card.Status.VISIBLE);
                     cardTurned = false;
-                    //timerOn = true;
-                    if (card2.sameIcon(card1)) {
-                        card1.setStatus(Card.Status.MISSING);
-                        card2.setStatus(Card.Status.MISSING);
-                        checkPlayer();
-                    } else {
-                        card1.setStatus(Card.Status.HIDDEN);
-                        card2.setStatus(Card.Status.HIDDEN);
-                        switchPlayer();
+                    timer.start();
                     }
                 }
             }
         }
-    }
+
 
     public class TimerListener implements  ActionListener{
         @Override
         public void actionPerformed(ActionEvent e){
-            
+            if (card2.sameIcon(card1)) {
+                card1.setStatus(Card.Status.MISSING);
+                card2.setStatus(Card.Status.MISSING);
+                checkPlayer();
+            } else {
+                card1.setStatus(Card.Status.HIDDEN);
+                card2.setStatus(Card.Status.HIDDEN);
+                switchPlayer();
+            }
         }
     }
 
