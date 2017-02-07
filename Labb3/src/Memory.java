@@ -9,7 +9,7 @@ public class Memory implements Runnable {
     Icon[] imageIcon = new Icon[pictures.length];
     JFrame frame = new JFrame("Memory");
 
-    Timer timer = new Timer(10, new TimerListener1());
+    Timer timer = new Timer(1500, new TimerListener1());
 
 
 
@@ -24,7 +24,6 @@ public class Memory implements Runnable {
 
     boolean player1turn = true;
     boolean cardTurned = false;
-    public boolean timerOn;
 
     Card card1;
     Card card2;
@@ -74,9 +73,8 @@ public class Memory implements Runnable {
         JButton[] cards = new JButton[tiles];
 
         for (int i = 0; i < tiles; i = i + 2) {
-            cards[i] = new Card(randomArray[i], Card.Status.HIDDEN);
-            cards[i + 1] = new Card(randomArray[i], Card.Status.HIDDEN);
-
+            cards[i] = new Card(randomArray[i/2], Card.Status.HIDDEN);
+            cards[i + 1] = new Card(randomArray[i/2], Card.Status.HIDDEN);
         }
 
         Tools.randomOrder(cards);
@@ -164,7 +162,7 @@ public class Memory implements Runnable {
                         JOptionPane.showMessageDialog(frame, "Not a valid number");
                     }
                 }
-                if (rows * columns > imageIcon.length || rows * columns < 4) {
+                if ((rows * columns)/2 > imageIcon.length || rows * columns < 4) {
                     JOptionPane.showMessageDialog(frame, "Too many or too few tiles");
                     rowsTest = true;
                     columnsTest = true;
@@ -181,7 +179,6 @@ public class Memory implements Runnable {
     }
 
     public class CardListener implements ActionListener {
-
         @Override
         public void actionPerformed(ActionEvent e) {
             if (!cardTurned) {
@@ -195,7 +192,7 @@ public class Memory implements Runnable {
                 if (card2.getStatus() == Card.Status.HIDDEN) {
                     card2.setStatus(Card.Status.VISIBLE);
                     cardTurned = false;
-                    timerOn = true;
+                    frame.setEnabled(false);
                     timer.start();
                 }
             }
@@ -205,12 +202,6 @@ public class Memory implements Runnable {
     public class TimerListener1 implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            try
-            {
-                Thread.sleep(1490);
-            }
-            catch(Exception exc)
-            {}
             if (card2.sameIcon(card1)) {
                 card1.setStatus(Card.Status.MISSING);
                 card2.setStatus(Card.Status.MISSING);
@@ -222,6 +213,7 @@ public class Memory implements Runnable {
                 switchPlayer();
             }
             timer.stop();
+            frame.setEnabled(true);
         }
     }
 
