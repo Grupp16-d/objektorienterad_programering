@@ -1,6 +1,7 @@
 import java.util.Arrays;
 import java.util.Random;
 
+//Randomise an array of objects
 public class Tools {
 
     public static void randomOrder(Object[] x){
