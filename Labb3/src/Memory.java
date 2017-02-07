@@ -9,6 +9,10 @@ public class Memory implements Runnable {
     Icon[] imageIcon = new Icon[pictures.length];
     JFrame frame = new JFrame("Memory");
 
+    Timer timer = new Timer(10, new TimerListener1());
+
+
+
     private int score1 = 0;
     private int score2 = 0;
 
@@ -20,6 +24,7 @@ public class Memory implements Runnable {
 
     boolean player1turn = true;
     boolean cardTurned = false;
+    public boolean timerOn;
 
     Card card1;
     Card card2;
@@ -48,12 +53,12 @@ public class Memory implements Runnable {
         }
     }
 
-    private void switchPlayer(){
+    private void switchPlayer() {
         if (player1turn) {
             player1turn = false;
             panePlayer1.setBackground(Color.white);
             panePlayer2.setBackground(Color.yellow);
-        }else{
+        } else {
             player1turn = true;
             panePlayer1.setBackground(Color.yellow);
             panePlayer2.setBackground(Color.white);
@@ -177,8 +182,6 @@ public class Memory implements Runnable {
 
     public class CardListener implements ActionListener {
 
-        Timer timer = new Timer(1000, new TimerListener());
-
         @Override
         public void actionPerformed(ActionEvent e) {
             if (!cardTurned) {
@@ -192,28 +195,35 @@ public class Memory implements Runnable {
                 if (card2.getStatus() == Card.Status.HIDDEN) {
                     card2.setStatus(Card.Status.VISIBLE);
                     cardTurned = false;
+                    timerOn = true;
                     timer.start();
-                    }
                 }
             }
         }
+    }
 
-
-    public class TimerListener implements  ActionListener{
+    public class TimerListener1 implements ActionListener {
         @Override
-        public void actionPerformed(ActionEvent e){
+        public void actionPerformed(ActionEvent e) {
+            try
+            {
+                Thread.sleep(1490);
+            }
+            catch(Exception exc)
+            {}
             if (card2.sameIcon(card1)) {
                 card1.setStatus(Card.Status.MISSING);
                 card2.setStatus(Card.Status.MISSING);
                 checkPlayer();
+
             } else {
                 card1.setStatus(Card.Status.HIDDEN);
                 card2.setStatus(Card.Status.HIDDEN);
                 switchPlayer();
             }
+            timer.stop();
         }
     }
-
 
     public class ExitListener implements ActionListener {
         @Override
