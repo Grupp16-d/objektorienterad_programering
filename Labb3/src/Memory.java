@@ -9,9 +9,10 @@ public class Memory implements Runnable {
     Icon[] imageIcon = new Icon[pictures.length];
     JFrame frame = new JFrame("Memory");
 
-    Timer timer = new Timer(1500, new TimerListener1());
+    Timer timer = new Timer(1500, new TimerListener());
 
-
+    int rows;
+    int columns;
 
     private int score1 = 0;
     private int score2 = 0;
@@ -63,6 +64,13 @@ public class Memory implements Runnable {
             panePlayer2.setBackground(Color.white);
         }
     }
+
+    /*private void endGame(){
+        int dialogResult = JOptionPane.showConfirmDialog (null, "Would You Like to Save your Previous Note First?","Warning",dialogButton);
+        if(dialogResult == JOptionPane.YES_OPTION){
+
+        }
+    }*/
 
 
     private void newGame(int n, int m) {
@@ -143,8 +151,6 @@ public class Memory implements Runnable {
             boolean rowsTest = true;
             boolean columnsTest = true;
             boolean inputTest = true;
-            int rows = 0;
-            int columns = 0;
             while (inputTest) {
                 while (rowsTest) {
                     try {
@@ -187,7 +193,7 @@ public class Memory implements Runnable {
                     card1.setStatus(Card.Status.VISIBLE);
                     cardTurned = true;
                 }
-            } else if (cardTurned) {
+            } else {
                 card2 = (Card) e.getSource();
                 if (card2.getStatus() == Card.Status.HIDDEN) {
                     card2.setStatus(Card.Status.VISIBLE);
@@ -199,14 +205,16 @@ public class Memory implements Runnable {
         }
     }
 
-    public class TimerListener1 implements ActionListener {
+    public class TimerListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (card2.sameIcon(card1)) {
                 card1.setStatus(Card.Status.MISSING);
                 card2.setStatus(Card.Status.MISSING);
+                if(score1 + score2 == (rows * columns)/2){
+                   /* endGame();*/
+                }
                 checkPlayer();
-
             } else {
                 card1.setStatus(Card.Status.HIDDEN);
                 card2.setStatus(Card.Status.HIDDEN);
