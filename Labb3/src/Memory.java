@@ -212,6 +212,9 @@ public class Memory implements Runnable {
                 card1.setStatus(Card.Status.MISSING);
                 card2.setStatus(Card.Status.MISSING);
                 if(score1 + score2 == (rows * columns)/2){
+                    timer.stop();
+                    frame.setEnabled(true);
+
                    /* endGame();*/
                 }
                 checkPlayer();
