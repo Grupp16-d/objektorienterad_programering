@@ -1,16 +1,16 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class Card extends JButton{
+public class Card extends JButton {
+
+    private Status cardStatus;
+    private Icon cardIcon;
 
     public enum Status {
         HIDDEN, VISIBLE, MISSING
     }
 
-    private Status cardStatus;
-    private Icon cardIcon;
-
-    public Card(Icon x){
+    public Card(Icon x) {
         this.setBorderPainted(false);
         this.setOpaque(true);
         this.setBackground(Color.white);
@@ -19,12 +19,12 @@ public class Card extends JButton{
         this.setIcon(null);
     }
 
-    public Card(Icon x, Status s){
+    public Card(Icon x, Status s) {
         this.setBorderPainted(false);
         this.setOpaque(true);
         this.cardStatus = s;
         this.cardIcon = x;
-        switch(s){
+        switch (s) {
             case MISSING:
                 this.setBackground(Color.white);
                 this.setIcon(null);
@@ -41,14 +41,14 @@ public class Card extends JButton{
 
     }
 
-    public boolean sameIcon(Card c){
+    public boolean sameIcon(Card c) {
         boolean comp = this.cardIcon == c.cardIcon;
         return comp;
     }
 
-    public void setStatus(Status s){
+    public void setStatus(Status s) {
         this.cardStatus = s;
-        switch(s){
+        switch (s) {
             case MISSING:
                 this.setBackground(Color.white);
                 this.setIcon(null);
@@ -64,7 +64,7 @@ public class Card extends JButton{
         }
     }
 
-    public Status getStatus(){
+    public Status getStatus() {
         return this.cardStatus;
     }
 }
