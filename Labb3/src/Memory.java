@@ -11,32 +11,50 @@ public class Memory implements Runnable {
     JLabel score1 = new JLabel("0");
     JLabel score2 = new JLabel("0");
 
+
     private int width = 400;
     private int height = 200;
 
-    public Memory(){
-        for(int i = 0; i < pictures.length; i++){
+    boolean player1turn = true;
+
+    public Memory() {
+        for (int i = 0; i < pictures.length; i++) {
             imageIcon[i] = new ImageIcon(pictures[i].getPath());
         }
     }
 
-    public void newGame(int n, int m){
+    private void checkPlayer() {
+        if (player1turn) {
+            int player1score = Integer.parseInt(score1.getText());
+            score1.setText(Integer.toString((player1score + 1)));
+            score1.revalidate();
+
+        }
+        if (!player1turn) {
+            int player2score = Integer.parseInt(score2.getText());
+            score2.setText(Integer.toString((player2score + 1)));
+            score2.revalidate();
+        }
+    }
+
+
+    public void newGame(int n, int m) {
         int tiles = n * m;
         Icon[] randomArray = new Icon[imageIcon.length];
         System.arraycopy(imageIcon, 0, randomArray, 0, randomArray.length);
         Tools.randomOrder(randomArray);
         JButton[] cards = new JButton[tiles];
 
-        for(int i = 0; i < tiles/2; i++){
-            for(int j = 0; j < tiles; j = j + 2){
-                cards[j] = new Card(randomArray[i], Card.Status.HIDDEN);
-                cards[j+1] = new Card(randomArray[i], Card.Status.HIDDEN);
-            }
+        for (int i = 0; i < tiles; i = i + 2) {
+            cards[i] = new Card(randomArray[i], Card.Status.HIDDEN);
+            cards[i + 1] = new Card(randomArray[i], Card.Status.HIDDEN);
+
         }
+
         Tools.randomOrder(cards);
 
-        width = m * 85 + 120;
-        height = n * 90 + 40;
+        width = m * 80 + 120;
+        height = n * 80 + 40;
         frame.setSize(width, height);
 
 
@@ -46,9 +64,9 @@ public class Memory implements Runnable {
         JPanel panePlayer2 = new JPanel();
         JLabel lblPlayer2 = new JLabel("Player 2");
 
-        players.setPreferredSize(new Dimension((120), (height-40/2)));
-        panePlayer1.setPreferredSize(new Dimension(120, (height-40)/2));
-        panePlayer2.setPreferredSize(new Dimension(120, (height-40)/2));
+        players.setPreferredSize(new Dimension(120, height - 45));
+        panePlayer1.setPreferredSize(new Dimension(120, (height - 45) / 2));
+        panePlayer2.setPreferredSize(new Dimension(120, (height - 45) / 2));
 
         players.add(panePlayer1);
         players.add(panePlayer2);
@@ -64,7 +82,7 @@ public class Memory implements Runnable {
         panePlayer2.setBorder(BorderFactory.createLineBorder(Color.black));
 
         JPanel paneCards = new JPanel();
-        for(JButton card : cards){
+        for (JButton card : cards) {
             card.setPreferredSize(new Dimension(70, 70));
             card.addActionListener(new CardListener());
             paneCards.add(card);
@@ -85,34 +103,32 @@ public class Memory implements Runnable {
             boolean inputTest = true;
             int rows = 0;
             int columns = 0;
-            while(inputTest){
-                while(rowsTest){
-                    try{
+            while (inputTest) {
+                while (rowsTest) {
+                    try {
                         rows = Integer.parseInt(JOptionPane.showInputDialog(frame, "How many rows do you want?"));
                         rowsTest = false;
-                    }
-                    catch(NumberFormatException error){
+                    } catch (NumberFormatException error) {
                         JOptionPane.showMessageDialog(frame, "Not a valid number");
                     }
                 }
-                while(columnsTest){
-                    try{
+                while (columnsTest) {
+                    try {
                         columns = Integer.parseInt(JOptionPane.showInputDialog(frame, "How many columns do you want?"));
                         columnsTest = false;
-                    }
-                    catch(NumberFormatException error){
+                    } catch (NumberFormatException error) {
                         JOptionPane.showMessageDialog(frame, "Not a valid number");
                     }
                 }
-                if(rows * columns > imageIcon.length || rows * columns < 4){
+                if (rows * columns > imageIcon.length || rows * columns < 4) {
                     JOptionPane.showMessageDialog(frame, "Too many or too few tiles");
                     rowsTest = true;
                     columnsTest = true;
-                }else if((rows * columns) % 2 != 0){
+                } else if ((rows * columns) % 2 != 0) {
                     JOptionPane.showMessageDialog(frame, "You need an even number of tiles");
                     rowsTest = true;
                     columnsTest = true;
-                }else{
+                } else {
                     inputTest = false;
                 }
             }
@@ -121,8 +137,38 @@ public class Memory implements Runnable {
     }
 
     public class CardListener implements ActionListener {
+        boolean cardTurned = false;
+        Card card1;
+        Card card2;
+
         @Override
         public void actionPerformed(ActionEvent e) {
+            if (!cardTurned) {
+                card1 = (Card) e.getSource();
+                if (card1.getStatus() == Card.Status.HIDDEN) {
+                    card1.setStatus(Card.Status.VISIBLE);
+                    cardTurned = true;
+                    //timerOn = true;
+                }
+            } else if (cardTurned) {
+                card2 = (Card) e.getSource();
+                if (card2.getStatus() == Card.Status.HIDDEN) {
+                    card2.setStatus(Card.Status.VISIBLE);
+                    cardTurned = false;
+                    //timerOn = true;
+
+                    if (card2.sameIcon(card1)) {
+                        checkPlayer();
+                        card1.setStatus(Card.Status.MISSING);
+                        card2.setStatus(Card.Status.MISSING);
+                    } else {
+                        card1.setStatus(Card.Status.HIDDEN);
+                        card2.setStatus(Card.Status.HIDDEN);
+                        player1turn = !player1turn;
+
+                    }
+                }
+            }
         }
     }
 
@@ -134,12 +180,12 @@ public class Memory implements Runnable {
         }
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         SwingUtilities.invokeLater(new Memory());
     }
 
     @Override
-    public void run(){
+    public void run() {
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
@@ -160,3 +206,4 @@ public class Memory implements Runnable {
 
     }
 }
+
