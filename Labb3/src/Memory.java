@@ -17,8 +17,8 @@ public class Memory implements Runnable {
     private int score1 = 0;
     private int score2 = 0;
 
-    JLabel lblScore1 = new JLabel(Integer.toString(score1));
-    JLabel lblScore2 = new JLabel(Integer.toString(score2));
+    JLabel lblScore1 = new JLabel("0");
+    JLabel lblScore2 = new JLabel("0");
 
     private int width = 400;
     private int height = 200;
@@ -45,11 +45,10 @@ public class Memory implements Runnable {
     private void checkPlayer() {
         if (player1turn) {
             score1++;
-            lblScore1.setText(Integer.toString(score1));
-        }
-        if (!player1turn) {
+            lblScore1.setText("Score: " + Integer.toString(score1));
+        }else{
             score2++;
-            lblScore2.setText(Integer.toString(score2));
+            lblScore2.setText("Score: " + Integer.toString(score2));
         }
     }
 
@@ -83,6 +82,7 @@ public class Memory implements Runnable {
         switch (n) {
             case 0:
                 System.exit(0);
+                break;
             case 1:
                 dialogOptions();
                 break;
@@ -110,8 +110,8 @@ public class Memory implements Runnable {
 
         score1 = 0;
         score2 = 0;
-        lblScore1.setText(Integer.toString(score1));
-        lblScore2.setText(Integer.toString(score2));
+        lblScore1.setText("Score: " + Integer.toString(score1));
+        lblScore2.setText("Score: " + Integer.toString(score2));
 
 
         width = m * 100 + 120;
@@ -132,9 +132,9 @@ public class Memory implements Runnable {
 
         frame.add(paneButtons, BorderLayout.PAGE_END);
 
-        players.setPreferredSize(new Dimension(120, height - 65));
-        panePlayer1.setPreferredSize(new Dimension(120, (height - 65) / 2));
-        panePlayer2.setPreferredSize(new Dimension(120, (height - 65) / 2));
+        players.setPreferredSize(new Dimension(100, height - 65));
+        panePlayer1.setPreferredSize(new Dimension(100, (height - 65) / 2));
+        panePlayer2.setPreferredSize(new Dimension(100, (height - 65) / 2));
 
         players.add(panePlayer1);
         players.add(panePlayer2);
@@ -149,9 +149,6 @@ public class Memory implements Runnable {
 
         frame.add(players, BorderLayout.WEST);
 
-        panePlayer1.setBorder(BorderFactory.createLineBorder(Color.black));
-        panePlayer2.setBorder(BorderFactory.createLineBorder(Color.black));
-
         JPanel paneCards = new JPanel();
         for (JButton card : cards) {
             card.setPreferredSize(new Dimension(90, 90));
@@ -160,7 +157,7 @@ public class Memory implements Runnable {
             card.setVisible(true);
         }
         frame.add(paneCards, BorderLayout.EAST);
-        paneCards.setPreferredSize(new Dimension(width - 120, height - 65));
+        paneCards.setPreferredSize(new Dimension(width - 100, height - 65));
 
         paneCards.setVisible(true);
         frame.revalidate();
@@ -173,7 +170,7 @@ public class Memory implements Runnable {
         boolean timerTest1 = true;
         boolean timerTest2 = true;
 
-        int timerValue = 0;
+        int timerValue = 1500;
 
         while (inputTest) {
             while (rowsTest) {
@@ -207,17 +204,17 @@ public class Memory implements Runnable {
         while (timerTest1) {
             while (timerTest2) {
                 try {
-                    timerValue = Integer.parseInt(JOptionPane.showInputDialog(frame, "How many milliseconds would you like the timer to be? (5 seconds maximum"));
+                    timerValue = Integer.parseInt(JOptionPane.showInputDialog(frame, "How many milliseconds would you like the delay to be? (5 seconds maximum"));
                     timerTest2 = false;
                 } catch (NumberFormatException nfe) {
                     JOptionPane.showMessageDialog(frame, "Not a valid number");
                 }
             }
             if (timerValue < 0) {
-                JOptionPane.showMessageDialog(frame, "How would that even work, you silly goose");
+                JOptionPane.showMessageDialog(frame, "wat?!");
                 timerTest2 = true;
             }else if (timerValue > 5000){
-                JOptionPane.showMessageDialog(frame, "That is way too long");
+                JOptionPane.showMessageDialog(frame, "That is way too long, you silly goose");
                 timerTest2 = true;
             }else{
                 timerTest1 = false;
