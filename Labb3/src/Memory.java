@@ -65,12 +65,30 @@ public class Memory implements Runnable {
         }
     }
 
-    /*private void endGame(){
-        int dialogResult = JOptionPane.showConfirmDialog (null, "Would You Like to Save your Previous Note First?","Warning",dialogButton);
-        if(dialogResult == JOptionPane.YES_OPTION){
-
+    private void endGame(){
+        String winner;
+        if(score1 > score2){
+            winner = "Player 1";
+        }else if(score1 == score2){
+            winner = "No one, it's a tie!";
+        }else{
+            winner = "Player 2";
         }
-    }*/
+
+        Object[] options = {"Exit game", "Start new game"};
+
+        int n = JOptionPane.showOptionDialog(frame, "The winner is: " + winner, "Game finished",
+                JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null,
+                options, options[0]);
+        switch (n){
+            case 0:
+                System.exit(0);
+            case 1:
+                dialogOptions();
+                break;
+        }
+    }
+
 
 
     private void newGame(int n, int m) {
@@ -86,6 +104,8 @@ public class Memory implements Runnable {
         }
 
         Tools.randomOrder(cards);
+
+        player1turn = true;
 
         score1 = 0;
         score2 = 0;
@@ -145,42 +165,47 @@ public class Memory implements Runnable {
         frame.revalidate();
     }
 
+    private void dialogOptions(){
+        boolean rowsTest = true;
+        boolean columnsTest = true;
+        boolean inputTest = true;
+        while (inputTest) {
+            while (rowsTest) {
+                try {
+                    rows = Integer.parseInt(JOptionPane.showInputDialog(frame, "How many rows do you want?"));
+                    rowsTest = false;
+                } catch (NumberFormatException error) {
+                    JOptionPane.showMessageDialog(frame, "Not a valid number");
+                }
+            }
+            while (columnsTest) {
+                try {
+                    columns = Integer.parseInt(JOptionPane.showInputDialog(frame, "How many columns do you want?"));
+                    columnsTest = false;
+                } catch (NumberFormatException error) {
+                    JOptionPane.showMessageDialog(frame, "Not a valid number");
+                }
+            }
+            if ((rows * columns)/2 > imageIcon.length || rows * columns < 4) {
+                JOptionPane.showMessageDialog(frame, "Too many or too few tiles");
+                rowsTest = true;
+                columnsTest = true;
+            } else if ((rows * columns) % 2 != 0) {
+                JOptionPane.showMessageDialog(frame, "You need an even number of tiles");
+                rowsTest = true;
+                columnsTest = true;
+            } else {
+                inputTest = false;
+            }
+        }
+        newGame(rows, columns);
+    }
+
+
     public class StartGameListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            boolean rowsTest = true;
-            boolean columnsTest = true;
-            boolean inputTest = true;
-            while (inputTest) {
-                while (rowsTest) {
-                    try {
-                        rows = Integer.parseInt(JOptionPane.showInputDialog(frame, "How many rows do you want?"));
-                        rowsTest = false;
-                    } catch (NumberFormatException error) {
-                        JOptionPane.showMessageDialog(frame, "Not a valid number");
-                    }
-                }
-                while (columnsTest) {
-                    try {
-                        columns = Integer.parseInt(JOptionPane.showInputDialog(frame, "How many columns do you want?"));
-                        columnsTest = false;
-                    } catch (NumberFormatException error) {
-                        JOptionPane.showMessageDialog(frame, "Not a valid number");
-                    }
-                }
-                if ((rows * columns)/2 > imageIcon.length || rows * columns < 4) {
-                    JOptionPane.showMessageDialog(frame, "Too many or too few tiles");
-                    rowsTest = true;
-                    columnsTest = true;
-                } else if ((rows * columns) % 2 != 0) {
-                    JOptionPane.showMessageDialog(frame, "You need an even number of tiles");
-                    rowsTest = true;
-                    columnsTest = true;
-                } else {
-                    inputTest = false;
-                }
-            }
-            newGame(rows, columns);
+            dialogOptions();
         }
     }
 
@@ -211,13 +236,12 @@ public class Memory implements Runnable {
             if (card2.sameIcon(card1)) {
                 card1.setStatus(Card.Status.MISSING);
                 card2.setStatus(Card.Status.MISSING);
+                checkPlayer();
                 if(score1 + score2 == (rows * columns)/2){
                     timer.stop();
                     frame.setEnabled(true);
-
-                   /* endGame();*/
+                    endGame();
                 }
-                checkPlayer();
             } else {
                 card1.setStatus(Card.Status.HIDDEN);
                 card2.setStatus(Card.Status.HIDDEN);
