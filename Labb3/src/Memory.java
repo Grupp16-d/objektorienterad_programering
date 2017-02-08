@@ -9,7 +9,7 @@ public class Memory implements Runnable {
     Icon[] imageIcon = new Icon[pictures.length];
     JFrame frame = new JFrame("Memory");
 
-    Timer timer = new Timer(1500, new TimerListener());
+    Timer timer;
 
     int rows;
     int columns;
@@ -65,13 +65,13 @@ public class Memory implements Runnable {
         }
     }
 
-    private void endGame(){
+    private void endGame() {
         String winner;
-        if(score1 > score2){
+        if (score1 > score2) {
             winner = "Player 1";
-        }else if(score1 == score2){
+        } else if (score1 == score2) {
             winner = "No one, it's a tie!";
-        }else{
+        } else {
             winner = "Player 2";
         }
 
@@ -80,7 +80,7 @@ public class Memory implements Runnable {
         int n = JOptionPane.showOptionDialog(frame, "The winner is: " + winner, "Game finished",
                 JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null,
                 options, options[0]);
-        switch (n){
+        switch (n) {
             case 0:
                 System.exit(0);
             case 1:
@@ -90,8 +90,7 @@ public class Memory implements Runnable {
     }
 
 
-
-    private void newGame(int n, int m) {
+    private void newGame(int n, int m, int t) {
         int tiles = n * m;
         Icon[] randomArray = new Icon[imageIcon.length];
         System.arraycopy(imageIcon, 0, randomArray, 0, randomArray.length);
@@ -99,13 +98,15 @@ public class Memory implements Runnable {
         JButton[] cards = new JButton[tiles];
 
         for (int i = 0; i < tiles; i = i + 2) {
-            cards[i] = new Card(randomArray[i/2], Card.Status.HIDDEN);
-            cards[i + 1] = new Card(randomArray[i/2], Card.Status.HIDDEN);
+            cards[i] = new Card(randomArray[i / 2], Card.Status.HIDDEN);
+            cards[i + 1] = new Card(randomArray[i / 2], Card.Status.HIDDEN);
         }
 
         Tools.randomOrder(cards);
 
         player1turn = true;
+
+        timer = new Timer((t), new TimerListener());
 
         score1 = 0;
         score2 = 0;
@@ -165,16 +166,21 @@ public class Memory implements Runnable {
         frame.revalidate();
     }
 
-    private void dialogOptions(){
+    private void dialogOptions() {
         boolean rowsTest = true;
         boolean columnsTest = true;
         boolean inputTest = true;
+        boolean timerTest1 = true;
+        boolean timerTest2 = true;
+
+        int timerValue = 0;
+
         while (inputTest) {
             while (rowsTest) {
                 try {
                     rows = Integer.parseInt(JOptionPane.showInputDialog(frame, "How many rows do you want?"));
                     rowsTest = false;
-                } catch (NumberFormatException error) {
+                } catch (NumberFormatException nfe) {
                     JOptionPane.showMessageDialog(frame, "Not a valid number");
                 }
             }
@@ -182,11 +188,11 @@ public class Memory implements Runnable {
                 try {
                     columns = Integer.parseInt(JOptionPane.showInputDialog(frame, "How many columns do you want?"));
                     columnsTest = false;
-                } catch (NumberFormatException error) {
+                } catch (NumberFormatException nfe) {
                     JOptionPane.showMessageDialog(frame, "Not a valid number");
                 }
             }
-            if ((rows * columns)/2 > imageIcon.length || rows * columns < 4) {
+            if ((rows * columns) / 2 > imageIcon.length || rows * columns < 4) {
                 JOptionPane.showMessageDialog(frame, "Too many or too few tiles");
                 rowsTest = true;
                 columnsTest = true;
@@ -198,7 +204,26 @@ public class Memory implements Runnable {
                 inputTest = false;
             }
         }
-        newGame(rows, columns);
+        while (timerTest1) {
+            while (timerTest2) {
+                try {
+                    timerValue = Integer.parseInt(JOptionPane.showInputDialog(frame, "How many milliseconds would you like the timer to be? (5 seconds maximum"));
+                    timerTest2 = false;
+                } catch (NumberFormatException nfe) {
+                    JOptionPane.showMessageDialog(frame, "Not a valid number");
+                }
+            }
+            if (timerValue < 0) {
+                JOptionPane.showMessageDialog(frame, "How would that even work, you silly goose");
+                timerTest2 = true;
+            }else if (timerValue > 5000){
+                JOptionPane.showMessageDialog(frame, "That is way too long");
+                timerTest2 = true;
+            }else{
+                timerTest1 = false;
+            }
+        }
+        newGame(rows, columns, timerValue);
     }
 
 
@@ -237,7 +262,7 @@ public class Memory implements Runnable {
                 card1.setStatus(Card.Status.MISSING);
                 card2.setStatus(Card.Status.MISSING);
                 checkPlayer();
-                if(score1 + score2 == (rows * columns)/2){
+                if (score1 + score2 == (rows * columns) / 2) {
                     timer.stop();
                     frame.setEnabled(true);
                     endGame();
