@@ -12,8 +12,10 @@ public class Memory implements Runnable {
 
     Timer timer;
 
-    int rows;
-    int columns;
+    int rows = 4;
+    int columns = 4;
+    int timerValue = 1500;
+
 
     private int score1 = 0;
     private int score2 = 0;
@@ -35,6 +37,11 @@ public class Memory implements Runnable {
     JLabel lblPlayer1 = new JLabel("Player 1");
     JPanel panePlayer2 = new JPanel();
     JLabel lblPlayer2 = new JLabel("Player 2");
+
+
+
+
+
 
 
     public Memory() {
@@ -159,7 +166,6 @@ public class Memory implements Runnable {
         panePlayer1.setBackground(Color.yellow);
         panePlayer2.setBackground(Color.white);
 
-
         frame.add(players, BorderLayout.WEST);
 
         JPanel paneCards = new JPanel();
@@ -182,8 +188,6 @@ public class Memory implements Runnable {
         boolean inputTest = true;
         boolean timerTest1 = true;
         boolean timerTest2 = true;
-
-        int timerValue = 1500;
 
         while (inputTest) {
             while (rowsTest) {
@@ -301,6 +305,33 @@ public class Memory implements Runnable {
         SwingUtilities.invokeLater(new Memory());
     }
 
+    private void menu(){
+        JMenuBar menuBar = new JMenuBar();
+        JMenu menuGame = new JMenu("Game");
+        JMenu menuSettings = new JMenu("Settings");
+        menuBar.add(menuGame);
+        menuBar.add(menuSettings);
+        JMenuItem menuNewgame = new JMenuItem("New game");
+
+        menuNewgame.addActionListener((ActionEvent event) -> {
+            newGame(rows, columns, timerValue);
+        });
+        JMenuItem menuExit = new JMenuItem("Exit");
+        menuExit.addActionListener((ActionEvent event) -> {
+            System.exit(0);
+        });
+        menuGame.add(menuNewgame);
+        menuGame.add(menuExit);
+
+        JMenuItem menuNewgame = new JMenuItem("New game");
+
+
+
+
+        frame.setJMenuBar(menuBar);
+    }
+
+
     @Override
     public void run() {
         frame.setVisible(true);
@@ -308,8 +339,9 @@ public class Memory implements Runnable {
         frame.pack();
         frame.setSize(width, height);
         frame.setResizable(false);
+        menu();
 
-        JPanel paneButtons = new JPanel();
+        /*JPanel paneButtons = new JPanel();
         paneButtons.setPreferredSize(new Dimension(width, 50));
 
         JButton startgame = new JButton("New game");
@@ -319,7 +351,7 @@ public class Memory implements Runnable {
         paneButtons.add(exit);
         exit.addActionListener(new ExitListener());
 
-        frame.add(paneButtons, BorderLayout.PAGE_END);
+        frame.add(paneButtons, BorderLayout.PAGE_END);*/
     }
 }
 
