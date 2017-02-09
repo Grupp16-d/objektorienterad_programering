@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+import javax.sound.sampled.*;
 
 public class Memory implements Runnable {
     File folder = new File("CardImages");
@@ -45,10 +46,10 @@ public class Memory implements Runnable {
     private void checkPlayer() {
         if (player1turn) {
             score1++;
-            lblScore1.setText("Score: " + Integer.toString(score1));
+            lblScore1.setText("Score: " + score1);
         }else{
             score2++;
-            lblScore2.setText("Score: " + Integer.toString(score2));
+            lblScore2.setText("Score: " + score2);
         }
     }
 
@@ -89,6 +90,18 @@ public class Memory implements Runnable {
         }
     }
 
+    public void playSound(String sound) {
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(sound).getAbsoluteFile());
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
+        } catch(Exception ex) {
+            System.out.println("Error with playing sound.");
+            ex.printStackTrace();
+        }
+    }
+
 
     private void newGame(int n, int m, int t) {
         int tiles = n * m;
@@ -110,8 +123,8 @@ public class Memory implements Runnable {
 
         score1 = 0;
         score2 = 0;
-        lblScore1.setText("Score: " + Integer.toString(score1));
-        lblScore2.setText("Score: " + Integer.toString(score2));
+        lblScore1.setText("Score: " + score1);
+        lblScore2.setText("Score: " + score2);
 
 
         width = m * 100 + 120;
@@ -263,7 +276,10 @@ public class Memory implements Runnable {
                     timer.stop();
                     frame.setEnabled(true);
                     endGame();
+                }else{
+                    playSound("yes.wav");
                 }
+
             } else {
                 card1.setStatus(Card.Status.HIDDEN);
                 card2.setStatus(Card.Status.HIDDEN);
