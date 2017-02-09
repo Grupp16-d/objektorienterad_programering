@@ -28,6 +28,7 @@ public class Memory implements Runnable {
 
     boolean player1turn = true;
     boolean cardTurned = false;
+    boolean soundEnable = true;
 
     Card card1;
     Card card2;
@@ -38,10 +39,7 @@ public class Memory implements Runnable {
     JPanel panePlayer2 = new JPanel();
     JLabel lblPlayer2 = new JLabel("Player 2");
 
-
-
-
-
+    JMenuItem menuSound = new JMenuItem("Sound (Enabled)");
 
 
     public Memory() {
@@ -92,7 +90,7 @@ public class Memory implements Runnable {
                 System.exit(0);
                 break;
             case 1:
-                dialogOptions();
+                newGame(rows, columns, timerValue);
                 break;
         }
     }
@@ -140,18 +138,6 @@ public class Memory implements Runnable {
 
         frame.getContentPane().removeAll();
 
-        JPanel paneButtons = new JPanel();
-        paneButtons.setPreferredSize(new Dimension(width, 65));
-
-        JButton startgame = new JButton("New game");
-        paneButtons.add(startgame);
-        startgame.addActionListener(new StartGameListener());
-        JButton exit = new JButton("Exit game");
-        paneButtons.add(exit);
-        exit.addActionListener(new ExitListener());
-
-        frame.add(paneButtons, BorderLayout.PAGE_END);
-
         players.setPreferredSize(new Dimension(100, height - 65));
         panePlayer1.setPreferredSize(new Dimension(100, (height - 65) / 2));
         panePlayer2.setPreferredSize(new Dimension(100, (height - 65) / 2));
@@ -182,14 +168,12 @@ public class Memory implements Runnable {
         frame.revalidate();
     }
 
-    private void dialogOptions() {
+    private void sizeDialog(){
         boolean rowsTest = true;
         boolean columnsTest = true;
-        boolean inputTest = true;
-        boolean timerTest1 = true;
-        boolean timerTest2 = true;
+        boolean rcTest = true;
 
-        while (inputTest) {
+        while (rcTest) {
             while (rowsTest) {
                 try {
                     rows = Integer.parseInt(JOptionPane.showInputDialog(frame, "How many rows do you want?"));
@@ -215,9 +199,15 @@ public class Memory implements Runnable {
                 rowsTest = true;
                 columnsTest = true;
             } else {
-                inputTest = false;
+                rcTest = false;
             }
         }
+    }
+
+    private void timerDialog() {
+        boolean timerTest1 = true;
+        boolean timerTest2 = true;
+
         while (timerTest1) {
             while (timerTest2) {
                 try {
@@ -237,15 +227,16 @@ public class Memory implements Runnable {
                 timerTest1 = false;
             }
         }
-        newGame(rows, columns, timerValue);
     }
 
+    private void soundDialog() {
+        if(soundEnable){
+            menuSound.setText("Sound (Disabled)");
+        }else{
+            menuSound.setText("Sound (Enabled)");
 
-    public class StartGameListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            dialogOptions();
         }
+        soundEnable = !soundEnable;
     }
 
     public class CardListener implements ActionListener {
@@ -294,13 +285,6 @@ public class Memory implements Runnable {
         }
     }
 
-    public class ExitListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            System.exit(0);
-        }
-    }
-
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Memory());
     }
@@ -311,22 +295,36 @@ public class Memory implements Runnable {
         JMenu menuSettings = new JMenu("Settings");
         menuBar.add(menuGame);
         menuBar.add(menuSettings);
-        JMenuItem menuNewgame = new JMenuItem("New game");
 
+        JMenuItem menuNewgame = new JMenuItem("New game");
         menuNewgame.addActionListener((ActionEvent event) -> {
             newGame(rows, columns, timerValue);
         });
+
         JMenuItem menuExit = new JMenuItem("Exit");
         menuExit.addActionListener((ActionEvent event) -> {
             System.exit(0);
         });
+
         menuGame.add(menuNewgame);
         menuGame.add(menuExit);
 
-        JMenuItem menuNewgame = new JMenuItem("New game");
+        JMenuItem menuSize = new JMenuItem("Size");
+        menuSize.addActionListener((ActionEvent event) -> {
+            sizeDialog();
+        });
+        menuSettings.add(menuSize);
 
+        JMenuItem menuTimer = new JMenuItem("Timer");
+        menuTimer.addActionListener((ActionEvent event) -> {
+            timerDialog();
+        });
+        menuSettings.add(menuTimer);
 
-
+        menuSound.addActionListener((ActionEvent event) -> {
+            soundDialog();
+        });
+        menuSettings.add(menuSound);
 
         frame.setJMenuBar(menuBar);
     }
@@ -340,18 +338,6 @@ public class Memory implements Runnable {
         frame.setSize(width, height);
         frame.setResizable(false);
         menu();
-
-        /*JPanel paneButtons = new JPanel();
-        paneButtons.setPreferredSize(new Dimension(width, 50));
-
-        JButton startgame = new JButton("New game");
-        paneButtons.add(startgame);
-        startgame.addActionListener(new StartGameListener());
-        JButton exit = new JButton("Exit game");
-        paneButtons.add(exit);
-        exit.addActionListener(new ExitListener());
-
-        frame.add(paneButtons, BorderLayout.PAGE_END);*/
     }
 }
 
