@@ -3,7 +3,7 @@ import java.util.Random;
 
 //Randomise an array of objects
 public class Tools {
-
+    //A new temp array that randomise objects inside an array
     public static void randomOrder(Object[] x){
         Random ran = new Random();
         Object[] tempArray = new Object[x.length];

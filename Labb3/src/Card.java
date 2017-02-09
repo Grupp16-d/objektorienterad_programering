@@ -13,7 +13,7 @@ public class Card extends JButton {
         HIDDEN, VISIBLE, MISSING
     }
 
-    //
+    //set the background for the icons depending on the status if the cards
     public Card(Icon x) {
         this.setBorderPainted(false);
         this.setOpaque(true);
