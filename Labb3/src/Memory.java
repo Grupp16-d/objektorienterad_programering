@@ -46,21 +46,26 @@ public class Memory implements Runnable {
         }
     }
 
-    private void newGame(int n, int m, int t) {
-        int tiles = n * m;
+    //Starts a new game with the current settings
+    private void newGame() {
+        int tiles = rows * columns;
         JButton[] cards = new JButton[tiles];
         Icon[] randomArray = new Icon[imageIcon.length];
 
-        width = m * 100 + 120;
-        height = n * 100 + 60;
+        //Calculates the new width and height of the main windows according to the number of cards
+        width = columns * 100 + 120;
+        height = rows * 100 + 60;
         score1 = 0;
         score2 = 0;
         player1turn = true;
 
-        timer = new Timer((t), new TimerListener());
+        //Creates a timer with the selected timerValue
+        timer = new Timer((timerValue), new TimerListener());
 
+        //Removes the old game
         frame.getContentPane().removeAll();
 
+        //Sets the correct settings of the labels and panels
         lblScore1.setText("Score: " + score1);
         lblScore2.setText("Score: " + score2);
         frame.setSize(width, height);
@@ -70,6 +75,7 @@ public class Memory implements Runnable {
         panePlayer1.setBackground(Color.yellow);
         panePlayer2.setBackground(Color.white);
 
+        //Adds the player panels to the main player panel
         players.add(panePlayer1);
         players.add(panePlayer2);
         panePlayer1.add(lblPlayer1);
@@ -77,29 +83,35 @@ public class Memory implements Runnable {
         panePlayer2.add(lblPlayer2);
         panePlayer2.add(lblScore2);
 
+        //Adds the main player panel on the left side of the frame
         frame.add(players, BorderLayout.WEST);
 
+        //Creates a copy of the array with images and randomises the copy
         System.arraycopy(imageIcon, 0, randomArray, 0, randomArray.length);
         Tools.randomOrder(randomArray);
 
+        //Adds the first tiles/2 cards twice into an array of cards and then randomises the array
         for (int i = 0; i < tiles; i = i + 2) {
             cards[i] = new Card(randomArray[i / 2], Card.Status.HIDDEN);
             cards[i + 1] = new Card(randomArray[i / 2], Card.Status.HIDDEN);
         }
-
         Tools.randomOrder(cards);
 
+        //Creates a panel for the cards and adds each card to the panel with an actionListener
         JPanel paneCards = new JPanel();
         for (JButton card : cards) {
             card.setPreferredSize(new Dimension(90, 90));
             card.addActionListener(new CardListener());
             paneCards.add(card);
         }
+
+        //Adds the card panel to the frame and revalidate the frame.
         frame.add(paneCards, BorderLayout.EAST);
         paneCards.setPreferredSize(new Dimension(width - 100, height - 65));
         frame.revalidate();
     }
 
+    //Checks which players turn it is and gives that player +1 to score and updates the label
     private void checkPlayer() {
         if (player1turn) {
             score1++;
@@ -110,6 +122,7 @@ public class Memory implements Runnable {
         }
     }
 
+    //Switches the active player and changes color accordingly
     private void switchPlayer() {
         if (player1turn) {
             panePlayer1.setBackground(Color.white);
@@ -123,6 +136,7 @@ public class Memory implements Runnable {
     }
 
     private void endGame() {
+        //Check who the winner
         String winner;
         if (score1 > score2) {
             winner = "Player 1";
@@ -134,6 +148,7 @@ public class Memory implements Runnable {
 
         Object[] options = {"Exit game", "Start new game"};
 
+        //Gives a dialog popup with the option to start a new game with the newGame method or exit the game
         int n = JOptionPane.showOptionDialog(frame, "The winner is: " + winner, "Game finished",
                 JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null,
                 options, options[0]);
@@ -142,29 +157,31 @@ public class Memory implements Runnable {
                 System.exit(0);
                 break;
             case 1:
-                newGame(rows, columns, timerValue);
+                newGame();
                 break;
         }
     }
 
+    //Plays a sound file at the given path
     private void playSound(String sound) {
         try {
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(sound).getAbsoluteFile());
             Clip clip = AudioSystem.getClip();
             clip.open(audioInputStream);
             clip.start();
-        } catch (Exception ex) {
-            System.out.println("Error with playing sound.");
-            ex.printStackTrace();
-        }
+        } catch (Exception e) {}
     }
 
+    //A series of dialog inputs to change size
     private void sizeDialog() {
+        //boolean to determine whether or not the input is correct.
         boolean rowsTest = true;
         boolean columnsTest = true;
         boolean rcTest = true;
 
+        //Loop that continues as long as there has not been a correct combination of rows and columns have been entered
         while (rcTest) {
+            //Loop that continues as long as a valid int has not been enter in the rows input
             while (rowsTest) {
                 try {
                     rows = Integer.parseInt(JOptionPane.showInputDialog(frame, "How many rows do you want?"));
@@ -173,6 +190,7 @@ public class Memory implements Runnable {
                     JOptionPane.showMessageDialog(frame, "Not a valid number");
                 }
             }
+            //Same as above but for columns
             while (columnsTest) {
                 try {
                     columns = Integer.parseInt(JOptionPane.showInputDialog(frame, "How many columns do you want?"));
@@ -181,6 +199,9 @@ public class Memory implements Runnable {
                     JOptionPane.showMessageDialog(frame, "Not a valid number");
                 }
             }
+            /*Checks if the number of tiles of possible with the amount of pictures and general memory logic
+            If the number of tiles is incorrect, the rows and column tests continue. if not the main loop boolean is
+            set to false, which ends the loop*/
             if ((rows * columns) / 2 > imageIcon.length || rows * columns < 4) {
                 JOptionPane.showMessageDialog(frame, "Too many or too few tiles");
                 rowsTest = true;
@@ -196,9 +217,12 @@ public class Memory implements Runnable {
     }
 
     private void timerDialog() {
+        //boolean to determine whether or not the input is correct.
         boolean timerTest1 = true;
         boolean timerTest2 = true;
 
+        /*Same logic as the sizeDialog, a second loop that checks if the try catch goes through, and then a main loop
+        that checks if the value is correct*/
         while (timerTest1) {
             while (timerTest2) {
                 try {
@@ -220,6 +244,7 @@ public class Memory implements Runnable {
         }
     }
 
+    //Changes the text of the menuItem for sound and changes the soundEnabled value
     private void soundDialog() {
         if (soundEnable) {
             menuSound.setText("Sound (Disabled)");
@@ -229,9 +254,13 @@ public class Memory implements Runnable {
         soundEnable = !soundEnable;
     }
 
+    //Listener for the card
     public class CardListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
+            /*If cardTurned is not true then it is flipped and cardTurned is set to true. If cardTurned is true the second
+            card is flipped and the two icons are compared to determine with sound should play. After that the timer for
+            the delay is started and the frame is disabled*/
             if (!cardTurned) {
                 card1 = (Card) e.getSource();
                 if (card1.getStatus() == Card.Status.HIDDEN) {
@@ -246,11 +275,11 @@ public class Memory implements Runnable {
                     frame.setEnabled(false);
                     if (card2.sameIcon(card1)) {
                         if (soundEnable) {
-                            playSound("Sounds/Yes.wav");
+                            playSound("yes.wav");
                         }
                     } else {
                         if (soundEnable) {
-                            playSound("Sounds/No.wav");
+                            playSound("no.wav");
                         }
                     }
                     timer.start();
@@ -259,9 +288,13 @@ public class Memory implements Runnable {
         }
     }
 
+    //Listener for the timer, which runs after the check of the second card
     public class TimerListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
+            /*The icons are check again, if they're the same the cards are removed and the player is given one point.
+            If the maximum amount of points have been given the game is ended. If the icons are not the same the cards
+            are hidden again and the players are switched. The timer is then stopped and the frame enabled*/
             if (card2.sameIcon(card1)) {
                 card1.setStatus(Card.Status.MISSING);
                 card2.setStatus(Card.Status.MISSING);
@@ -281,6 +314,7 @@ public class Memory implements Runnable {
         }
     }
 
+    //A Method that adds the menuBar to the frame
     private void menu() {
         JMenuBar menuBar = new JMenuBar();
         JMenu menuGame = new JMenu("Game");
@@ -289,7 +323,7 @@ public class Memory implements Runnable {
         menuBar.add(menuSettings);
 
         JMenuItem menuNewgame = new JMenuItem("New game");
-        menuNewgame.addActionListener((ActionEvent event) -> newGame(rows, columns, timerValue));
+        menuNewgame.addActionListener((ActionEvent event) -> newGame());
 
         JMenuItem menuExit = new JMenuItem("Exit");
         menuExit.addActionListener((ActionEvent event) -> System.exit(0));
