@@ -5,47 +5,99 @@ import java.io.File;
 import javax.sound.sampled.*;
 
 public class Memory implements Runnable {
-    File folder = new File("CardImages");
-    File[] pictures = folder.listFiles();
-    Icon[] imageIcon = new Icon[pictures.length];
-    JFrame frame = new JFrame("Memory");
 
-    Timer timer;
+    private File folder = new File("CardImages");
+    private File[] pictures = folder.listFiles();
+    private Icon[] imageIcon = new Icon[pictures.length];
 
-    int rows = 4;
-    int columns = 4;
-    int timerValue = 1500;
+    private JFrame frame = new JFrame("Memory");
 
+    private JLabel lblScore1 = new JLabel("0");
+    private JLabel lblScore2 = new JLabel("0");
+    private JPanel players = new JPanel();
+    private JPanel panePlayer1 = new JPanel();
+    private JPanel panePlayer2 = new JPanel();
+    private JLabel lblPlayer1 = new JLabel("Player 1");
+    private JLabel lblPlayer2 = new JLabel("Player 2");
 
+    private JMenuItem menuSound = new JMenuItem("Sound (Enabled)");
+
+    private Timer timer;
+
+    private int rows = 4;
+    private int columns = 4;
+    private int timerValue = 1500;
     private int score1 = 0;
     private int score2 = 0;
-
-    JLabel lblScore1 = new JLabel("0");
-    JLabel lblScore2 = new JLabel("0");
-
     private int width = 400;
     private int height = 200;
 
-    boolean player1turn = true;
-    boolean cardTurned = false;
-    boolean soundEnable = true;
+    private boolean player1turn = true;
+    private boolean cardTurned = false;
+    private boolean soundEnable = true;
 
-    Card card1;
-    Card card2;
+    private Card card1;
+    private Card card2;
 
-    JPanel players = new JPanel();
-    JPanel panePlayer1 = new JPanel();
-    JLabel lblPlayer1 = new JLabel("Player 1");
-    JPanel panePlayer2 = new JPanel();
-    JLabel lblPlayer2 = new JLabel("Player 2");
-
-    JMenuItem menuSound = new JMenuItem("Sound (Enabled)");
-
-
-    public Memory() {
+    //Creates icons of the images in the picture array
+    private Memory() {
         for (int i = 0; i < pictures.length; i++) {
             imageIcon[i] = new ImageIcon(pictures[i].getPath());
         }
+    }
+
+    private void newGame(int n, int m, int t) {
+        int tiles = n * m;
+        JButton[] cards = new JButton[tiles];
+        Icon[] randomArray = new Icon[imageIcon.length];
+
+        width = m * 100 + 120;
+        height = n * 100 + 60;
+        score1 = 0;
+        score2 = 0;
+        player1turn = true;
+
+        timer = new Timer((t), new TimerListener());
+
+        frame.getContentPane().removeAll();
+
+        lblScore1.setText("Score: " + score1);
+        lblScore2.setText("Score: " + score2);
+        frame.setSize(width, height);
+        players.setPreferredSize(new Dimension(100, height - 65));
+        panePlayer1.setPreferredSize(new Dimension(100, (height - 65) / 2));
+        panePlayer2.setPreferredSize(new Dimension(100, (height - 65) / 2));
+        panePlayer1.setBackground(Color.yellow);
+        panePlayer2.setBackground(Color.white);
+
+        players.add(panePlayer1);
+        players.add(panePlayer2);
+        panePlayer1.add(lblPlayer1);
+        panePlayer1.add(lblScore1);
+        panePlayer2.add(lblPlayer2);
+        panePlayer2.add(lblScore2);
+
+        frame.add(players, BorderLayout.WEST);
+
+        System.arraycopy(imageIcon, 0, randomArray, 0, randomArray.length);
+        Tools.randomOrder(randomArray);
+
+        for (int i = 0; i < tiles; i = i + 2) {
+            cards[i] = new Card(randomArray[i / 2], Card.Status.HIDDEN);
+            cards[i + 1] = new Card(randomArray[i / 2], Card.Status.HIDDEN);
+        }
+
+        Tools.randomOrder(cards);
+
+        JPanel paneCards = new JPanel();
+        for (JButton card : cards) {
+            card.setPreferredSize(new Dimension(90, 90));
+            card.addActionListener(new CardListener());
+            paneCards.add(card);
+        }
+        frame.add(paneCards, BorderLayout.EAST);
+        paneCards.setPreferredSize(new Dimension(width - 100, height - 65));
+        frame.revalidate();
     }
 
     private void checkPlayer() {
@@ -80,10 +132,6 @@ public class Memory implements Runnable {
             winner = "Player 2";
         }
 
-        if (soundEnable){
-            playSound("Sounds/Victory.wav");
-        }
-
         Object[] options = {"Exit game", "Start new game"};
 
         int n = JOptionPane.showOptionDialog(frame, "The winner is: " + winner, "Game finished",
@@ -109,67 +157,6 @@ public class Memory implements Runnable {
             System.out.println("Error with playing sound.");
             ex.printStackTrace();
         }
-    }
-
-
-    private void newGame(int n, int m, int t) {
-        int tiles = n * m;
-        Icon[] randomArray = new Icon[imageIcon.length];
-        System.arraycopy(imageIcon, 0, randomArray, 0, randomArray.length);
-        Tools.randomOrder(randomArray);
-        JButton[] cards = new JButton[tiles];
-
-        for (int i = 0; i < tiles; i = i + 2) {
-            cards[i] = new Card(randomArray[i / 2], Card.Status.HIDDEN);
-            cards[i + 1] = new Card(randomArray[i / 2], Card.Status.HIDDEN);
-        }
-
-        Tools.randomOrder(cards);
-
-        player1turn = true;
-
-        timer = new Timer((t), new TimerListener());
-
-        score1 = 0;
-        score2 = 0;
-        lblScore1.setText("Score: " + score1);
-        lblScore2.setText("Score: " + score2);
-
-
-        width = m * 100 + 120;
-        height = n * 100 + 60;
-        frame.setSize(width, height);
-
-        frame.getContentPane().removeAll();
-
-        players.setPreferredSize(new Dimension(100, height - 65));
-        panePlayer1.setPreferredSize(new Dimension(100, (height - 65) / 2));
-        panePlayer2.setPreferredSize(new Dimension(100, (height - 65) / 2));
-
-        players.add(panePlayer1);
-        players.add(panePlayer2);
-        panePlayer1.add(lblPlayer1);
-        panePlayer1.add(lblScore1);
-        panePlayer2.add(lblPlayer2);
-        panePlayer2.add(lblScore2);
-
-        panePlayer1.setBackground(Color.yellow);
-        panePlayer2.setBackground(Color.white);
-
-        frame.add(players, BorderLayout.WEST);
-
-        JPanel paneCards = new JPanel();
-        for (JButton card : cards) {
-            card.setPreferredSize(new Dimension(90, 90));
-            card.addActionListener(new CardListener());
-            paneCards.add(card);
-            card.setVisible(true);
-        }
-        frame.add(paneCards, BorderLayout.EAST);
-        paneCards.setPreferredSize(new Dimension(width - 100, height - 65));
-
-        paneCards.setVisible(true);
-        frame.revalidate();
     }
 
     private void sizeDialog() {
@@ -238,7 +225,6 @@ public class Memory implements Runnable {
             menuSound.setText("Sound (Disabled)");
         } else {
             menuSound.setText("Sound (Enabled)");
-
         }
         soundEnable = !soundEnable;
     }
@@ -295,10 +281,6 @@ public class Memory implements Runnable {
         }
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Memory());
-    }
-
     private void menu() {
         JMenuBar menuBar = new JMenuBar();
         JMenu menuGame = new JMenu("Game");
@@ -307,43 +289,37 @@ public class Memory implements Runnable {
         menuBar.add(menuSettings);
 
         JMenuItem menuNewgame = new JMenuItem("New game");
-        menuNewgame.addActionListener((ActionEvent event) -> {
-            newGame(rows, columns, timerValue);
-        });
+        menuNewgame.addActionListener((ActionEvent event) -> newGame(rows, columns, timerValue));
 
         JMenuItem menuExit = new JMenuItem("Exit");
-        menuExit.addActionListener((ActionEvent event) -> {
-            System.exit(0);
-        });
+        menuExit.addActionListener((ActionEvent event) -> System.exit(0));
 
         menuGame.add(menuNewgame);
         menuGame.add(menuExit);
 
         JMenuItem menuSize = new JMenuItem("Size");
-        menuSize.addActionListener((ActionEvent event) -> {
-            sizeDialog();
-        });
+        menuSize.addActionListener((ActionEvent event) -> sizeDialog());
         menuSettings.add(menuSize);
 
         JMenuItem menuTimer = new JMenuItem("Timer");
-        menuTimer.addActionListener((ActionEvent event) -> {
-            timerDialog();
-        });
+        menuTimer.addActionListener((ActionEvent event) -> timerDialog());
         menuSettings.add(menuTimer);
 
-        menuSound.addActionListener((ActionEvent event) -> {
-            soundDialog();
-        });
+        menuSound.addActionListener((ActionEvent event) -> soundDialog());
         menuSettings.add(menuSound);
 
         frame.setJMenuBar(menuBar);
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Memory());
     }
 
 
     @Override
     public void run() {
         frame.setVisible(true);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.pack();
         frame.setSize(width, height);
         frame.setResizable(false);
