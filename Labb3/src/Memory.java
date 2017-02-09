@@ -52,7 +52,7 @@ public class Memory implements Runnable {
         if (player1turn) {
             score1++;
             lblScore1.setText("Score: " + score1);
-        }else{
+        } else {
             score2++;
             lblScore2.setText("Score: " + score2);
         }
@@ -60,13 +60,13 @@ public class Memory implements Runnable {
 
     private void switchPlayer() {
         if (player1turn) {
-            player1turn = false;
             panePlayer1.setBackground(Color.white);
             panePlayer2.setBackground(Color.yellow);
+            player1turn = false;
         } else {
-            player1turn = true;
             panePlayer1.setBackground(Color.yellow);
             panePlayer2.setBackground(Color.white);
+            player1turn = true;
         }
     }
 
@@ -78,6 +78,10 @@ public class Memory implements Runnable {
             winner = "No one, it's a tie!";
         } else {
             winner = "Player 2";
+        }
+
+        if (soundEnable){
+            playSound("Sounds/Victory.wav");
         }
 
         Object[] options = {"Exit game", "Start new game"};
@@ -95,13 +99,13 @@ public class Memory implements Runnable {
         }
     }
 
-    public void playSound(String sound) {
+    private void playSound(String sound) {
         try {
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(sound).getAbsoluteFile());
             Clip clip = AudioSystem.getClip();
             clip.open(audioInputStream);
             clip.start();
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             System.out.println("Error with playing sound.");
             ex.printStackTrace();
         }
@@ -168,7 +172,7 @@ public class Memory implements Runnable {
         frame.revalidate();
     }
 
-    private void sizeDialog(){
+    private void sizeDialog() {
         boolean rowsTest = true;
         boolean columnsTest = true;
         boolean rcTest = true;
@@ -220,19 +224,19 @@ public class Memory implements Runnable {
             if (timerValue < 0) {
                 JOptionPane.showMessageDialog(frame, "wat?!");
                 timerTest2 = true;
-            }else if (timerValue > 5000){
+            } else if (timerValue > 5000) {
                 JOptionPane.showMessageDialog(frame, "That is way too long, you silly goose");
                 timerTest2 = true;
-            }else{
+            } else {
                 timerTest1 = false;
             }
         }
     }
 
     private void soundDialog() {
-        if(soundEnable){
+        if (soundEnable) {
             menuSound.setText("Sound (Disabled)");
-        }else{
+        } else {
             menuSound.setText("Sound (Enabled)");
 
         }
@@ -254,6 +258,15 @@ public class Memory implements Runnable {
                     card2.setStatus(Card.Status.VISIBLE);
                     cardTurned = false;
                     frame.setEnabled(false);
+                    if (card2.sameIcon(card1)) {
+                        if (soundEnable) {
+                            playSound("Sounds/Yes.wav");
+                        }
+                    } else {
+                        if (soundEnable) {
+                            playSound("Sounds/No.wav");
+                        }
+                    }
                     timer.start();
                 }
             }
@@ -271,10 +284,7 @@ public class Memory implements Runnable {
                     timer.stop();
                     frame.setEnabled(true);
                     endGame();
-                }else{
-                    playSound("yes.wav");
                 }
-
             } else {
                 card1.setStatus(Card.Status.HIDDEN);
                 card2.setStatus(Card.Status.HIDDEN);
@@ -289,7 +299,7 @@ public class Memory implements Runnable {
         SwingUtilities.invokeLater(new Memory());
     }
 
-    private void menu(){
+    private void menu() {
         JMenuBar menuBar = new JMenuBar();
         JMenu menuGame = new JMenu("Game");
         JMenu menuSettings = new JMenu("Settings");
