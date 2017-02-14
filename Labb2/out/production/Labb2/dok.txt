@@ -1,0 +1,33 @@
+> 1/3 + 1/4	--> 7/12
+> 2/9 * -4/5	--> -8/45
+> 2/6 - 7/9	--> -4/9
+> 7/-2 / -2/5	--> 35/4
+> -5/10 + -3/4	--> -5/4
+> -5/3 * 4	--> -20/3
+> 7/9 * 2	--> 14/9
+> -5 * 1/3	--> -5/3
+> 2 / -5	--> -2/5
+> 2/5 = 40/100	--> true
+> 6/18 = -1/3	--> false
+> 2/9 < 1/5	--> false
+> -5/9 < 1/2	--> true
+> 1/2 +1/3	--> Felaktigt uttryck!
+> 1/5	--> Felaktigt uttryck!
+> /4 + 1/3	--> NumberFormatException: This is not a valid number!
+> 5/ + 1/3	--> NumberFormatException: This is not a valid expression!
+> 1//4 + 1/4	--> NumberFormatException: This is not a valid number!
+> 1/ - 2 + 1/3	--> Felaktigt uttryck!
+> 1/3 a + 1/3	--> Felaktigt uttryck!
+> -/3 + 1/3	--> NumberFormatException: This is not a valid number!
+> 1/3 + 1/3 + 1/3	--> Felaktigt uttryck!
+> 1/3 & 1/3	--> Felaktig operator!
+> 1/0 + 1/3	--> NumberFormatException: Denominator = 0
+> 1 / 0	--> NumberFormatException: Denominator = 0
+
+RatNumTest3 kör först en metod för att kolla om equals, clone och toDouble. Equals testet för equals på flera RatNums
+och kollar om dessa returnerar rätt värden. Om detta funkar körs clone some sedan testas med equals. toDouble testas
+med att jämföra värdet som toDouble returnerar och värdet som den inbygda divitions operationen i java returnerar med
+täljaren och nämnaren som sedan skickas in i toDouble som ett RatNum.
+Resten av testerna består av en while loop som tar två uttryck och en operator som input från konsolen. Om operatorn är korrekt
+körs uttrycken i parser och sedan utförs operationen med hjälp av de olika metoderna i RatNum och det resulterande RatNumet
+skrivs ut i konsolen med hjälp av toString metoden.

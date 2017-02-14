@@ -62,9 +62,6 @@ public class Memory implements Runnable {
         //Creates a timer with the selected timerValue
         timer = new Timer((timerValue), new TimerListener());
 
-        //Removes the old game
-        frame.getContentPane().removeAll();
-
         //Sets the correct settings of the labels and panels
         lblScore1.setText("Score: " + score1);
         lblScore2.setText("Score: " + score2);
@@ -75,13 +72,16 @@ public class Memory implements Runnable {
         panePlayer1.setBackground(Color.yellow);
         panePlayer2.setBackground(Color.white);
 
+        //Removes the old game
+        frame.getContentPane().removeAll();
+
         //Adds the player panels to the main player panel
-        players.add(panePlayer1);
-        players.add(panePlayer2);
         panePlayer1.add(lblPlayer1);
         panePlayer1.add(lblScore1);
         panePlayer2.add(lblPlayer2);
         panePlayer2.add(lblScore2);
+        players.add(panePlayer1);
+        players.add(panePlayer2);
 
         //Adds the main player panel on the left side of the frame
         frame.add(players, BorderLayout.WEST);
@@ -169,7 +169,9 @@ public class Memory implements Runnable {
             Clip clip = AudioSystem.getClip();
             clip.open(audioInputStream);
             clip.start();
-        } catch (Exception e) {}
+        } catch (Exception e) {
+            System.out.println("Error playing " + sound);
+        }
     }
 
     //A series of dialog inputs to change size
@@ -248,10 +250,12 @@ public class Memory implements Runnable {
     private void soundDialog() {
         if (soundEnable) {
             menuSound.setText("Sound (Disabled)");
+            soundEnable = false;
+
         } else {
             menuSound.setText("Sound (Enabled)");
+            soundEnable = true;
         }
-        soundEnable = !soundEnable;
     }
 
     //Listener for the card
@@ -303,6 +307,7 @@ public class Memory implements Runnable {
                     timer.stop();
                     frame.setEnabled(true);
                     endGame();
+                    return;
                 }
             } else {
                 card1.setStatus(Card.Status.HIDDEN);
