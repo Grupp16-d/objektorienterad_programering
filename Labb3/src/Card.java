@@ -17,33 +17,16 @@ public class Card extends JButton {
     public Card(Icon x) {
         this.setBorderPainted(false);
         this.setOpaque(true);
-        this.setBackground(Color.white);
         this.cardStatus = Status.MISSING;
         this.cardIcon = x;
-        this.setIcon(null);
     }
 
     //create a card with a icon with a status depending on the status it sets the background or if it is visible
     public Card(Icon x, Status s) {
         this.setBorderPainted(false);
         this.setOpaque(true);
-        this.cardStatus = s;
         this.cardIcon = x;
-        switch (s) {
-            case MISSING:
-                this.setBackground(Color.white);
-                this.setIcon(null);
-                break;
-            case HIDDEN:
-                this.setBackground(Color.blue);
-                this.setIcon(null);
-                break;
-            case VISIBLE:
-                this.setBackground(Color.blue);
-                this.setIcon(x);
-                break;
-        }
-
+        setStatus(s);
     }
 
     //check if too card have the same icon
