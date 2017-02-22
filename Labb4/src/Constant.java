@@ -12,4 +12,8 @@ class Constant extends CircuitComponent {
     protected void computeOutputs(boolean[] newOutputValues) {
         newOutputValues[0] = value;
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/master
