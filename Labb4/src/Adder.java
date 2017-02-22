@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-public class Adder {
-=======
-
 public class Adder extends CircuitComponent {
 
     public Adder() {
@@ -22,5 +18,4 @@ public class Adder extends CircuitComponent {
             newOutputValues[0] = true;
         }
     }
->>>>>>> origin/master
 }

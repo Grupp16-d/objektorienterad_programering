@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-public class Circuit {
-=======
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -39,6 +36,4 @@ public class Circuit{
         components.entrySet().forEach((component) -> components.get(component).updateState());
         components.entrySet().forEach((component) -> components.get(component).propagateStateChange());
     }
-
->>>>>>> origin/master
 }

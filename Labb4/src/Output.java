@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-public class Output {
-    public boolean getValue(){
-        
-=======
 public class Output extends CircuitComponent{
 
     public Output(){
@@ -14,6 +9,5 @@ public class Output extends CircuitComponent{
     }
 
     protected void computeOutputs(boolean[] newOutputValues) {
->>>>>>> origin/master
     }
 }

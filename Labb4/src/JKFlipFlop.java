@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-public class JKFlipFlop {
-=======
 public class JKFlipFlop extends StatefulComponent {
 
     private boolean state = false;
@@ -24,5 +21,4 @@ public class JKFlipFlop extends StatefulComponent {
         newOutputValues[0] = state;
         newOutputValues[1] = !state;
     }
->>>>>>> origin/master
 }

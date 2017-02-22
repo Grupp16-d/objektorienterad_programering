@@ -5,11 +5,8 @@ class Fork extends CircuitComponent {
 
     protected void computeOutputs(boolean[] newOutputValues) {
         boolean val = getInput(0);
-<<<<<<< HEAD
-        for (int i = 0; i < nOutput; i++) {
-=======
+
         for (int i = 0; i < output; i++) {
->>>>>>> origin/master
             newOutputValues[i] = val;
         }
     }

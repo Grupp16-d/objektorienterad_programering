@@ -1,9 +1,4 @@
-<<<<<<< HEAD
-public class Input {
 
-    public void setValue(boolean value){
-
-=======
 public class Input extends CircuitComponent {
     private boolean value;
 
@@ -21,6 +16,5 @@ public class Input extends CircuitComponent {
 
     public void setValue(boolean value) {
         this.value = value;
->>>>>>> origin/master
     }
 }

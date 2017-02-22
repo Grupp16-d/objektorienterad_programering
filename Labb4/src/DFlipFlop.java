@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-public class DFlipFlop {
-=======
 public class DFlipFlop extends StatefulComponent {
 
     boolean state = false;
@@ -17,5 +14,4 @@ public class DFlipFlop extends StatefulComponent {
     protected void computeOutputs(boolean[] newOutputValues) {
         newOutputValues[0] = state;
     }
->>>>>>> origin/master
 }
