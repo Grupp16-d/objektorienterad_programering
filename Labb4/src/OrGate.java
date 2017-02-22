@@ -5,6 +5,6 @@ public class OrGate extends LogicGate {
     }
 
     protected boolean compute() {
-        return !(getInput(0) && getInput(1));
+        return (getInput(0) || getInput(1));
     }
 }
