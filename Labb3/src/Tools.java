@@ -1,5 +1,6 @@
-import java.util.Arrays;
 import java.util.Random;
+
+import static java.util.Arrays.*;
 
 //Randomise an array of objects
 public class Tools {
@@ -9,7 +10,7 @@ public class Tools {
         Object[] tempArray = new Object[x.length];
         int i = 0;
 
-        while(Arrays.asList(tempArray).contains(null)) {
+        while(asList(tempArray).contains(null)) {
             int randomIndex = ran.nextInt(x.length);
             if (tempArray[randomIndex] == null) {
                 tempArray[randomIndex] = x[i];
