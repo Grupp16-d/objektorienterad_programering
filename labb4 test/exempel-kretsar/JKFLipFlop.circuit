@@ -1,0 +1,5 @@
+j INPUT 0 c 0
+k INPUT 0 c 1
+c JKFLIPFLOP 0 q 0 1 nq 0
+q OUTPUT
+nq OUTPUT

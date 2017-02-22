@@ -1,0 +1,4 @@
+i INPUT 0 c 0
+c FORK 0 o1 0 1 o2 0
+o1 OUTPUT
+o2 OUTPUT

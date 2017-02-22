@@ -1,0 +1,6 @@
+i1 INPUT 0 c 0
+i2 INPUT 0 c 1
+i3 INPUT 0 c 2
+c ADDER 0 sum 0 1 carry 0
+sum OUTPUT
+carry OUTPUT

@@ -1,0 +1,4 @@
+i1 INPUT 0 c 0
+i2 INPUT 0 c 1
+c AND 0 o 0
+o OUTPUT
