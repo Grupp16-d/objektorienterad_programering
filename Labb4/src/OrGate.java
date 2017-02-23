@@ -1,3 +1,4 @@
+//Take 2 inputs return true when either or both inputs are active
 public class OrGate extends LogicGate {
 
     public OrGate() {
