@@ -1,8 +1,4 @@
-import java.lang.reflect.Constructor;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class Circuit {
 
@@ -12,11 +8,14 @@ public class Circuit {
     }
 
     public Circuit(List<String> lines) {
+        List<CircuitComponent> inputs = new ArrayList<CircuitComponent>();
+
         for (String line : lines) {
             String[] tempSplit = line.split("\\s+");
             if (tempSplit[1].equals("INPUT")) {
                 CircuitComponent comp = new Input(false);
                 addComponent(tempSplit[0], comp);
+
             } else if (tempSplit[1].equals("ZERO")) {
                 CircuitComponent comp = new Constant(false);
                 addComponent(tempSplit[0], comp);
@@ -89,7 +88,7 @@ public class Circuit {
     }
 
     public void tick() {
-        components.entrySet().forEach((component) -> components.get(component).updateState());
-        components.entrySet().forEach((component) -> components.get(component).propagateStateChange());
+        components.entrySet().forEach((entry) -> entry.getValue().updateState());
+        components.entrySet().forEach((entry) -> entry.getValue().propagateStateChange());
     }
 }

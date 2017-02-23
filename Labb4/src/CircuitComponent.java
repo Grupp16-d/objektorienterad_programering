@@ -34,6 +34,7 @@ public abstract class CircuitComponent {
         if (this.connections[outputIndex] != null) {
             int receiverInputIndex = this.connections[outputIndex].receiverInputIndex;
             this.connections[outputIndex].receiver.inputConnected[receiverInputIndex] = false;
+            this.connections[outputIndex].receiver.inputValue[receiverInputIndex] = false;
             this.connections[outputIndex] = null;
         } else {
             throw new RuntimeException("Not connected");
@@ -47,6 +48,8 @@ public abstract class CircuitComponent {
             if (outputValue[i] != tempArray[i]) {
                 outputValue[i] = !outputValue[i];
                 if (connections[i] != null) {
+                    int receiverInputIndex = this.connections[i].receiverInputIndex;
+                    this.connections[i].receiver.inputValue[receiverInputIndex] = outputValue[i];
                     this.connections[i].receiver.propagateChange();
                 }
             }

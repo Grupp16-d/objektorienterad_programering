@@ -16,5 +16,6 @@ public class Input extends CircuitComponent {
 
     public void setValue(boolean value) {
         this.value = value;
+        propagateChange();
     }
 }
