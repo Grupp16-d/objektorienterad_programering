@@ -25,6 +25,8 @@ public abstract class CircuitComponent {
         if (this.connections[outputIndex] == null && !receiver.inputConnected[receiverInputIndex]) {
             this.connections[outputIndex] = new Wire(receiver, receiverInputIndex);
             receiver.inputConnected[receiverInputIndex] = true;
+            receiver.inputValue[receiverInputIndex] = outputValue[outputIndex];
+            receiver.propagateChange();
         } else {
             throw new RuntimeException("Already connected");
         }
