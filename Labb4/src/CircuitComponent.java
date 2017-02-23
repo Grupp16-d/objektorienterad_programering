@@ -46,7 +46,7 @@ public abstract class CircuitComponent {
     protected void propagateChange() {
         boolean tempArray[] = new boolean[output];
         computeOutputs(tempArray);
-        for (int i = 0; i < tempArray.length; i++) {
+        for (int i = 0; i < output; i++) {
             if (outputValue[i] != tempArray[i]) {
                 outputValue[i] = !outputValue[i];
                 if (connections[i] != null) {

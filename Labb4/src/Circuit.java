@@ -8,13 +8,11 @@ public class Circuit {
     }
 
     public Circuit(List<String> lines) {
-        List<CircuitComponent> inputs = new ArrayList<CircuitComponent>();
         for (String line : lines) {
             String[] tempSplit = line.split("\\s+");
             if (tempSplit[1].equals("INPUT")) {
                 CircuitComponent comp = new Input(false);
                 addComponent(tempSplit[0], comp);
-                inputs.add(comp);
             } else if (tempSplit[1].equals("ZERO")) {
                 CircuitComponent comp = new Constant(false);
                 addComponent(tempSplit[0], comp);
@@ -62,7 +60,6 @@ public class Circuit {
                 }
             }
         }
-        tick();
     }
 
 
