@@ -1,3 +1,4 @@
+//models a component with 1 output with a constant value
 class Constant extends CircuitComponent {
     private final boolean value;
 

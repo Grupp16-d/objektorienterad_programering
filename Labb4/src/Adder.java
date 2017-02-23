@@ -1,3 +1,4 @@
+//Java class that take 3 imputs and 2 outputs that ads 3 number and output a 2 bit number
 public class Adder extends CircuitComponent {
 
     public Adder() {

@@ -1,4 +1,4 @@
-
+//
 public class Input extends CircuitComponent {
     private boolean value;
 
