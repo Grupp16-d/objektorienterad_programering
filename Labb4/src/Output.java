@@ -8,6 +8,5 @@ public class Output extends CircuitComponent{
         return getInput(0);
     }
 
-    protected void computeOutputs(boolean[] newOutputValues) {
-    }
+    protected void computeOutputs(boolean[] newOutputValues) {}
 }
