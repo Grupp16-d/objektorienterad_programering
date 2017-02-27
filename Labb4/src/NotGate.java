@@ -6,6 +6,6 @@ public class NotGate extends LogicGate {
     }
 
     protected boolean compute() {
-        return !(getInput(0));
+        return !getInput(0);
     }
 }

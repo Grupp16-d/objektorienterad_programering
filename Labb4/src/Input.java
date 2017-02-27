@@ -4,7 +4,7 @@ public class Input extends CircuitComponent {
     public Input(boolean value) {
         super(0, 1);
         this.value = value;
-        if (value = true) {
+        if (value) {
             propagateChange();
         }
     }

@@ -5,7 +5,7 @@ class Constant extends CircuitComponent {
     public Constant(boolean value) {
         super(0, 1);
         this.value = value;
-        if (value = true) {
+        if (value) {
             propagateChange();
         }
     }

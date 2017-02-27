@@ -46,10 +46,10 @@ public abstract class CircuitComponent {
     protected void propagateChange() {
         boolean tempArray[] = new boolean[output];
         computeOutputs(tempArray);
-        for (int i = 0; i < output; i++) {
-            if (outputValue[i] != tempArray[i]) {
-                outputValue[i] = !outputValue[i];
-                if (connections[i] != null) {
+        for (int i = 0; i < this.output; i++) {
+            if (this.outputValue[i] != tempArray[i]) {
+                this.outputValue[i] = !this.outputValue[i];
+                if (this.connections[i] != null) {
                     int receiverInputIndex = this.connections[i].receiverInputIndex;
                     this.connections[i].receiver.inputValue[receiverInputIndex] = outputValue[i];
                     this.connections[i].receiver.propagateChange();
