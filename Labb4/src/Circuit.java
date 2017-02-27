@@ -98,11 +98,7 @@ public class Circuit {
     }
 
     public CircuitComponent getComponent(String name) {
-        if (components.get(name) != null) {
-            return components.get(name);
-        } else {
-            return null;
-        }
+        return components.get(name);
     }
 
     public Set<String> componentNames() {
