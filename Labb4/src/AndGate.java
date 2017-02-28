@@ -1,4 +1,4 @@
-//And gate take 2 in and if they are the same return 1
+//Output is set to true if both inputs are true
 public class AndGate extends LogicGate {
 
     public AndGate() {

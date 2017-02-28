@@ -1,4 +1,4 @@
-//take 2 inputs if either one of them are active but not if both are active return true
+//Output is set to true if only 1 input is true
 public class XorGate extends LogicGate{
 
     public XorGate() {

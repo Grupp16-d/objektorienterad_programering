@@ -1,4 +1,4 @@
-//take 1 input and invert the input and return the opiset
+//Output is set to the inverse of the input
 public class NotGate extends LogicGate {
 
     public NotGate() {

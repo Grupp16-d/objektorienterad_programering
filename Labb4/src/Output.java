@@ -1,3 +1,4 @@
+//Has no output, can return it's input by running getValue;
 public class Output extends CircuitComponent{
 
     public Output(){

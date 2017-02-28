@@ -1,3 +1,4 @@
+//An abstract class for all the components
 public abstract class CircuitComponent {
 
     protected final int input;
@@ -21,6 +22,8 @@ public abstract class CircuitComponent {
         this.output = 0;
     }
 
+    //Connects the current component from one output to an input on the given component and sets all the correct
+    //values in the arrays. Also runs propagateChange to make sure the connected component gets the outputs.
     public void connect(int outputIndex, CircuitComponent receiver, int receiverInputIndex) {
         if (this.connections[outputIndex] == null && !receiver.inputConnected[receiverInputIndex]) {
             this.connections[outputIndex] = new Wire(receiver, receiverInputIndex);
@@ -32,17 +35,23 @@ public abstract class CircuitComponent {
         }
     }
 
+    //Disconnects the given output on the current component and sets all the correct values in the arrays of the current
+    //and connected component and runs propagateChange to update the previously connected component
     public void disconnect(int outputIndex) {
         if (this.connections[outputIndex] != null) {
             int receiverInputIndex = this.connections[outputIndex].receiverInputIndex;
+            CircuitComponent receiver = this.connections[outputIndex].receiver;
             this.connections[outputIndex].receiver.inputConnected[receiverInputIndex] = false;
             this.connections[outputIndex].receiver.inputValue[receiverInputIndex] = false;
             this.connections[outputIndex] = null;
+            receiver.propagateChange();
         } else {
             throw new RuntimeException("Not connected");
         }
     }
 
+    //Changes outputs on the current component according the its inputs and its specific computeOutputs method.
+    //If the outputs change the method runs again on the connected components.
     protected void propagateChange() {
         boolean tempArray[] = new boolean[output];
         computeOutputs(tempArray);

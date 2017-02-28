@@ -1,3 +1,4 @@
+//Sets the output to the given value of the constructor/setValue
 public class Input extends CircuitComponent {
     private boolean value;
 

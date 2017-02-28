@@ -1,3 +1,4 @@
+//The output is set depending on the combination of the 2 inputs once tick is run
 public class JKFlipFlop extends StatefulComponent {
 
     private boolean state = false;

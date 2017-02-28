@@ -1,3 +1,4 @@
+//Abstract class for the Gate components
 public abstract class LogicGate extends CircuitComponent {
 
     public LogicGate(int inputs) {
