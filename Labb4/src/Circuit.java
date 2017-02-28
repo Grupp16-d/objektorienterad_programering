@@ -18,63 +18,51 @@ public class Circuit {
             //Adds this component to the Map that contains the Circuit
             switch (tempSplit[1]) {
                 case "INPUT": {
-                    CircuitComponent comp = new Input(false);
-                    addComponent(tempSplit[0], comp);
+                    addComponent(tempSplit[0], new Input(false));
                     break;
                 }
                 case "ZERO": {
-                    CircuitComponent comp = new Constant(false);
-                    addComponent(tempSplit[0], comp);
+                    addComponent(tempSplit[0], new Constant(false));
                     break;
                 }
                 case "ONE": {
-                    CircuitComponent comp = new Constant(true);
-                    addComponent(tempSplit[0], comp);
+                    addComponent(tempSplit[0], new Constant(true));
                     break;
                 }
                 case "FORK": {
-                    CircuitComponent comp = new Fork(2);
-                    addComponent(tempSplit[0], comp);
+                    addComponent(tempSplit[0], new Fork(2));
                     break;
                 }
                 case "AND": {
-                    CircuitComponent comp = new AndGate();
-                    addComponent(tempSplit[0], comp);
+                    addComponent(tempSplit[0], new AndGate());
                     break;
                 }
                 case "OR": {
-                    CircuitComponent comp = new OrGate();
-                    addComponent(tempSplit[0], comp);
+                    addComponent(tempSplit[0], new OrGate());
                     break;
                 }
                 case "XOR": {
-                    CircuitComponent comp = new XorGate();
-                    addComponent(tempSplit[0], comp);
+                    addComponent(tempSplit[0], new XorGate());
                     break;
                 }
                 case "NOT": {
-                    CircuitComponent comp = new NotGate();
-                    addComponent(tempSplit[0], comp);
+                    addComponent(tempSplit[0], new NotGate());
                     break;
                 }
                 case "ADDER": {
-                    CircuitComponent comp = new Adder();
-                    addComponent(tempSplit[0], comp);
+                    addComponent(tempSplit[0], new Adder());
                     break;
                 }
                 case "OUTPUT": {
-                    CircuitComponent comp = new Output();
-                    addComponent(tempSplit[0], comp);
+                    addComponent(tempSplit[0], new Output());
                     break;
                 }
                 case "DFLIPFLOP": {
-                    CircuitComponent comp = new DFlipFlop();
-                    addComponent(tempSplit[0], comp);
+                    addComponent(tempSplit[0], new DFlipFlop());
                     break;
                 }
                 case "JKFLIPFLOP": {
-                    CircuitComponent comp = new JKFlipFlop();
-                    addComponent(tempSplit[0], comp);
+                    addComponent(tempSplit[0], new JKFlipFlop());
                     break;
                 }
             }

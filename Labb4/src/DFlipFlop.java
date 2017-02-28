@@ -1,7 +1,7 @@
 //Output is set to the input when the tick method is run.
 public class DFlipFlop extends StatefulComponent {
 
-    boolean state = false;
+    private boolean state = false;
 
     public DFlipFlop() {
         super(1, 1);
